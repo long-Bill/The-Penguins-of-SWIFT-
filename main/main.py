@@ -2,10 +2,12 @@
 
 '''
    Modules/Things to add 
-   X Command to update linux system
+
+      X Command to update linux system
    Add functionality to add docker to system repository
-   Command to install python tkinter
-   Command to install Docker 
+      X Command to install python tkinter
+      X Command to install Docker 
+   Test container capabilities and how python interacts with containers
 '''
 import subprocess
 
@@ -14,6 +16,7 @@ def dependencies():
    update = subprocess.run(['sudo','apt','update', '-y'], capture_output=True, text=True)
    package = subprocess.run(['grep', 'command not found'], capture_output=True,text=True, input=update.stdout)
    print(update.stdout, package.stdout)
+
    #Installs packages using YUM if it isn't a Debian based distro
    if(update.returncode == 1 and package.returncode == 1):
       print("I am RHEL-based, WORK IN PROGRESS ONLY PLAYABLE ON DEBIAN-BASED SYSTEMS")
@@ -27,7 +30,7 @@ def dependencies():
       print(docker.stdout)
    
 
-
+############### Main ###########################
 
 from tkinter import * 
 
