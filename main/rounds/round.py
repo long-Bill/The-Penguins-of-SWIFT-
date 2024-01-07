@@ -18,3 +18,6 @@
 
 
 '''
+
+class round0:
+    round
