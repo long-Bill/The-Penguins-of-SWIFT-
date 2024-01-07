@@ -56,6 +56,7 @@ quit.place(relx=0.5, rely=0.70, anchor='center')
 menu.mainloop()
 
 
+
 #dependencies()
 #command = ['sudo','yum', 'update', '-y']
 #result = subprocess.run(command, capture_output=True, text= True)
