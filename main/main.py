@@ -12,6 +12,8 @@
 
 from tkinter import * 
 import subprocess
+import os
+import sys
 
 def dependencies(root):
    print("********Installing dependencies*********")
@@ -54,6 +56,9 @@ quit = Button(menu, text = 'Quit', command=menu.destroy,height=2,width=10)
 quit.place(relx=0.5, rely=0.70, anchor='center')
 
 menu.mainloop()
+
+
+#Create a dictionary with round objects and the round number next to it. 
 
 
 
