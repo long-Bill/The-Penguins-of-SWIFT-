@@ -7,6 +7,8 @@
    Add functionality to add docker to system repository
       X Command to install python tkinter
       X Command to install Docker 
+   Pip install Docker api
+   https://stackoverflow.com/questions/61698133/docker-py-permissionerror13 --> Add user to docker group
    Test container capabilities and how python interacts with containers
 '''
 
