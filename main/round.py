@@ -40,7 +40,9 @@ class round0:
             command="sleep infinity",
             name=self.name,
             tty=True,
-            stdin_open = True
+            stdin_open = True,
+            user="gamer",
+            hostname=self.name
         )
         subprocess.Popen(['docker', 'exec','-it',self.name,'/bin/bash'])
 
