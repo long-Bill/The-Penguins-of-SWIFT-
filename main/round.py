@@ -68,7 +68,6 @@ class round0:
             name=self.name,
             tty=True,
             stdin_open=True,
-            user="gamer",
             hostname=self.name
         )
         subprocess.Popen(['docker', 'exec', '-it', self.name, '/bin/bash'])
@@ -86,3 +85,4 @@ class round0:
         #     #subprocess.run(['docker', 'remove', '--force','round0'])
         # elif(check.returncode == 0):
         #     print("test.txt not found try again")
+

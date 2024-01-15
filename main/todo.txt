@@ -1,0 +1,14 @@
+Create a proper round(s)
+Define checkSolution function for each round
+Error handling with GUI 
+Create a function that deletes the current round container and remove the image
+Add a description file in each round's directory 
+
+
+
+
+ERROR HANDLING
+
+* User types "exit" in the container ONCE, THEY CANNOT GET OUT OR ELSE
+* User closes terminal (kills the script overall) --> Clear all images and containers at the beginning 
+* User closes the GUI 

@@ -10,11 +10,13 @@
    Pip install Docker api
    https://stackoverflow.com/questions/61698133/docker-py-permissionerror13 --> Add user to docker group
    Test container capabilities and how python interacts with containers
+   https://stackoverflow.com/questions/34051747/get-environment-variable-from-docker-container 
 '''
 
 from tkinter import *
 import subprocess
 import os
+import re
 import sys
 from round import *
 
@@ -34,14 +36,42 @@ def dependencies(root):
         root.destroy()
 
     else:
-        tkinter = subprocess.run(
-            ['sudo', 'apt', 'install', 'python-tk', '-y'], capture_output=True, text=True)
-        docker = subprocess.run(['sudo', 'apt-get', 'install', 'docker-ce', 'docker-ce-cli', 'containerd.io', 'docker-buildx-plugin', 'docker-compose-plugin', '-y'],
+        tkinterPip = subprocess.run(
+            ['sudo', 'apt', 'install', 'python-tk','python3-pip','python-dev', '-y'], capture_output=True, text=True)
+        d = subprocess.run(['sudo', 'apt-get', 'install', 'docker-ce', 'docker-ce-cli', 'containerd.io', 'docker-buildx-plugin', 'docker-compose-plugin', '-y'],
                                 capture_output=True, text=True)
-        print(tkinter.stdout)
-        print(docker.stdout)
-        root.destroy()
+        pip = subprocess.run(['sudo','pip','install','docker'])
+        print(tkinterPip.stdout)
+        print(d.stdout)
 
+        # containers = subprocess.run(['docker','ps','-q'],capture_output=True, text=True)
+        # numberOfContainers = subprocess.run(['wc','-l'],capture_output=True,text=True,input=containers.stdout)
+        
+        roundContainer = subprocess.run(['docker','ps','--filter','name=^round','-aq'],capture_output=True,text=True)
+        subprocess.run(['xargs','docker','rm','--force'],capture_output=True,text=True, input=roundContainer.stdout)
+
+        # roundImage = subprocess.run(['docker','images'],capture_output=True,text=True)
+        # egrep = subprocess.run(['egrep','^round'],capture_output=True,text=True,input=roundImage.stdout)
+        # print(egrep.stdout)
+        # roundName = subprocess.run(["awk","\\'{print$1}\\'"],capture_output=True,text=True,input=egrep.stdout)
+        # print(roundName.stdout)
+        client = docker.from_env()
+        
+        iList = client.images.list()
+        for image in iList:
+            name = image.tags[0]
+            if (("round" in name) or ("ubuntu" in name)):
+                print(image.id)
+                client.images.remove(image.id,force=True)
+                
+        root.destroy()
+    
+    
+
+
+#docker ps --filter name=^round -aq | xargs docker rm --force
+#docker images | egrep '^round' | awk '{print$1}'
+#docker images | egrep '^ubuntu' | awk '{print$1}'
 
 ############### Main ###########################
 gameStatus = True
