@@ -70,6 +70,7 @@ def quitGame(gui):
 
 
 menu = Tk()
+
 menu.title('The Penguins of SWIFT')
 w = 500
 h = 500
@@ -80,6 +81,7 @@ x = (ws/2) - (w/2)
 y = (hs/2) - (h/2)
 
 menu.geometry('%dx%d+%d+%d' % (w, h, x, y))
+
 start = Button(menu, text='Start!',
                command=lambda: dependencies(menu), height=2, width=10)
 start.place(relx=0.5, rely=0.55, anchor='center')
@@ -95,6 +97,7 @@ quit.place(relx=0.5,
            )
 
 menu.mainloop()
+
 
 if (gameStatus):
     script_directory = os.path.dirname(os.path.abspath(sys.argv[0]))

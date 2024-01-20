@@ -36,6 +36,7 @@ class round0:
         self.name = "round{}".format(self.roundNumber)
         self.roundStatus = False
         self.directory = "{}/rounds/round{}".format(scriptD, self.roundNumber)
+        self.__flag = "Hi"
 
     # static --> constant for all rounds
 
@@ -90,16 +91,16 @@ class round0:
         root.config(bg="light green")
         root.title("CORRECT ANSWER")
         root.geometry("400x150")
-        frame = Frame(root)
+        frame = Frame(root,bg="light green")
         frame.pack()
         def close():
             root.destroy()
             roundMenu.destroy()
         
-        check = Label(frame, text=u'\u2713',font=("Arial",55),fg="Green",padx=20,pady=5)
+        check = Label(frame, text=u'\u2713',font=("Arial",55),fg="Green",padx=20,pady=5,bg="light green")
 
         check.pack(side= LEFT)
-        text = Label(frame, text="Correct! Here is your flag:\n {flag}",font=("Arial",15))
+        text = Label(frame, text="Correct! Here is your flag:\n {flag}",font=("Arial",15),bg="light green")
         text.pack(side= RIGHT)
         next = Button(root,
                 text='Next round',
@@ -108,7 +109,7 @@ class round0:
                 ) 
         next.place(relx=0.5,
                 rely=0.80,
-                anchor='sw'
+                anchor='w'
                 )
 
         root.mainloop()
