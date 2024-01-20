@@ -28,10 +28,10 @@
 # menu.mainloop()
 
 
-# from tkinter import *
-# import round
-# import os
-# import sys
+from tkinter import *
+import round
+import os
+import sys
 import subprocess
 # script_directory = os.path.dirname(os.path.abspath(sys.argv[0]))
 
@@ -56,5 +56,5 @@ import subprocess
 # menu.after(2000, firstround.createImage())
 # menu.mainloop()
 
-pip = subprocess.run(['sudo','pip','install','docker'])
+
 ###### GIT CANNOT SEE THIS######

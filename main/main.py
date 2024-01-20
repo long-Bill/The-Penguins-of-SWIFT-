@@ -44,17 +44,11 @@ def dependencies(root):
         print(tkinterPip.stdout)
         print(d.stdout)
 
-        # containers = subprocess.run(['docker','ps','-q'],capture_output=True, text=True)
-        # numberOfContainers = subprocess.run(['wc','-l'],capture_output=True,text=True,input=containers.stdout)
         
         roundContainer = subprocess.run(['docker','ps','--filter','name=^round','-aq'],capture_output=True,text=True)
         subprocess.run(['xargs','docker','rm','--force'],capture_output=True,text=True, input=roundContainer.stdout)
 
-        # roundImage = subprocess.run(['docker','images'],capture_output=True,text=True)
-        # egrep = subprocess.run(['egrep','^round'],capture_output=True,text=True,input=roundImage.stdout)
-        # print(egrep.stdout)
-        # roundName = subprocess.run(["awk","\\'{print$1}\\'"],capture_output=True,text=True,input=egrep.stdout)
-        # print(roundName.stdout)
+        
         client = docker.from_env()
         
         iList = client.images.list()
@@ -65,13 +59,6 @@ def dependencies(root):
                 client.images.remove(image.id,force=True)
                 
         root.destroy()
-    
-    
-
-
-#docker ps --filter name=^round -aq | xargs docker rm --force
-#docker images | egrep '^round' | awk '{print$1}'
-#docker images | egrep '^ubuntu' | awk '{print$1}'
 
 ############### Main ###########################
 gameStatus = True
@@ -121,15 +108,13 @@ if (gameStatus):
         rounds[rIndex]= roundClass(rIndex,script_directory)
         currentRound = rounds[rIndex]
         
+        currentRound.createImage()
         currentRound.startGame()
+        
     
 
 
 # Create a dictionary with round objects and the round number next to it.
 
 
-# dependencies()
-# command = ['sudo','yum', 'update', '-y']
-# result = subprocess.run(command, capture_output=True, text= True)
-# print(result.returncode)
-# print("hello world!")
+

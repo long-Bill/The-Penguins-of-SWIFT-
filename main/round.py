@@ -22,9 +22,10 @@
 import docker
 import subprocess
 from tkinter import *
+from tkinter import messagebox
 
 class round0:
-    roundStatus = False
+    
 
     # static --> constant for all rounds
     def __str__(self) -> str:
@@ -33,13 +34,18 @@ class round0:
     def __init__(self, roundNumber, scriptD):
         self.roundNumber = roundNumber
         self.name = "round{}".format(self.roundNumber)
+        self.roundStatus = False
         self.directory = "{}/rounds/round{}".format(scriptD, self.roundNumber)
 
     # static --> constant for all rounds
-        
+
     def startGame(self):
+        def closing_menu():
+            if (messagebox.askokcancel("Quit","Are you sure?")):
+                menu.destroy()
         menu = Tk()
-        menu.title('The Penguins of SWIFT')
+        menu.protocol("WM_DELETE_WINDOW" , closing_menu)
+        menu.title(self.name)
         w = 500
         h = 500
         ws = menu.winfo_screenwidth()
@@ -50,14 +56,14 @@ class round0:
 
         menu.geometry('%dx%d+%d+%d' % (w, h, x, y))
         start = Button(menu, text='Check',
-               command=lambda: self.checkSolution(), height=2, width=10)
+               command=lambda: self.checkSolution(menu), height=2, width=10)
         start.place(relx=0.5, rely=0.55, anchor='center')
-        menu.after(2000, self.createImage())
+        
+        
+        menu.after(2000, self.enterImage())
+        
         menu.mainloop()
-
-
-
-    
+      
     def createImage(self):
         client = docker.from_env()
         client.images.build(path=self.directory, tag=self.name, rm=True)
@@ -70,19 +76,55 @@ class round0:
             stdin_open=True,
             hostname=self.name
         )
+        
+    def enterImage(self):
         subprocess.Popen(['docker', 'exec', '-it', self.name, '/bin/bash'])
 
-    # Will be dynamic for each round
 
-    def checkSolution(self):
+    def wrongAnswer(self,error):
+        messagebox.showerror("YOU ARE WRONG!", f"Error: \n{error}")
+        
+    def correctAnswer(self,string, roundMenu):
+        
+        root = Tk()
+        root.config(bg="light green")
+        root.title("CORRECT ANSWER")
+        root.geometry("400x150")
+        frame = Frame(root)
+        frame.pack()
+        def close():
+            root.destroy()
+            roundMenu.destroy()
+        
+        check = Label(frame, text=u'\u2713',font=("Arial",55),fg="Green",padx=20,pady=5)
+
+        check.pack(side= LEFT)
+        text = Label(frame, text="Correct! Here is your flag:\n {flag}",font=("Arial",15))
+        text.pack(side= RIGHT)
+        next = Button(root,
+                text='Next round',
+                command=lambda: close(),
+                height=1, width=10
+                ) 
+        next.place(relx=0.5,
+                rely=0.80,
+                anchor='sw'
+                )
+
+        root.mainloop()
+
+
+    # Will be dynamic for each round
+    def checkSolution(self,mainMenu):
         ls = subprocess.run(
-            ['docker', 'exec', '-it', 'round0', 'ls'], capture_output=True, text=True)
+            ['docker', 'exec', '-it', 'round0', 'cat', 'FirstFlag.txt'], capture_output=True, text=True)
         check = subprocess.run(
-            ['grep', 'test.txt'], capture_output=True, text=True, input=ls.stderr)
-        print(check.stderr)
-        # if(check.returncode == 1):
-        #     print("YOU FOUND IT")
-        #     #subprocess.run(['docker', 'remove', '--force','round0'])
-        # elif(check.returncode == 0):
-        #     print("test.txt not found try again")
+            ['grep', 'Give me flag'], capture_output=True, text=True, input=ls.stdout)
+        if(check.returncode == 0 ):
+            
+            self.correctAnswer("you did it", mainMenu)
+        else:
+            self.wrongAnswer("Incorrect answer, check file again")
+            
+        
 
