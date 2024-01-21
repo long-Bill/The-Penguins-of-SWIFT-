@@ -90,17 +90,28 @@ class round0:
         root = Tk()
         root.config(bg="light green")
         root.title("CORRECT ANSWER")
-        root.geometry("400x150")
+        w = 400
+        h = 150
+        ws = root.winfo_screenwidth()
+        hs = root.winfo_screenheight()
+
+        x = (ws/2) - (w/2)
+        y = (hs/2) - (h/2)
+
+        root.geometry('%dx%d+%d+%d' % (w, h, x, y))
         frame = Frame(root,bg="light green")
         frame.pack()
         def close():
             root.destroy()
             roundMenu.destroy()
+            client = docker.from_env()
+            client.containers.get(self.name).remove(force=True)
+            client.images.remove(self.name)
         
         check = Label(frame, text=u'\u2713',font=("Arial",55),fg="Green",padx=20,pady=5,bg="light green")
 
         check.pack(side= LEFT)
-        text = Label(frame, text="Correct! Here is your flag:\n {flag}",font=("Arial",15),bg="light green")
+        text = Label(frame, text="Correct! Here is your flag:\n" f"\'{self.__flag}\'",font=("Arial",15),bg="light green")
         text.pack(side= RIGHT)
         next = Button(root,
                 text='Next round',
@@ -111,7 +122,7 @@ class round0:
                 rely=0.80,
                 anchor='w'
                 )
-
+        
         root.mainloop()
 
 
