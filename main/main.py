@@ -68,8 +68,11 @@ def quitGame(gui):
     gui.destroy()
     sys.exit()
 
-
+def closing_menu():
+            if (messagebox.askokcancel("Quit","Are you sure?")):
+                quitGame(menu)
 menu = Tk()
+menu.protocol("WM_DELETE_WINDOW" , closing_menu)
 
 menu.title('The Penguins of SWIFT')
 w = 500

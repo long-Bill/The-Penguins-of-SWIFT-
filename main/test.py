@@ -33,28 +33,25 @@ import round
 import os
 import sys
 import subprocess
-# script_directory = os.path.dirname(os.path.abspath(sys.argv[0]))
+import docker
+import base64
 
+string = "UGVuZ3VpbkZsYWc="
+bin = base64.b64decode(string)
+print(bin.decode('utf-8'))
 
-# firstround = round.round0(0, script_directory)
-# # firstround.createImage()
+# import base64
 
-# menu = Tk()
-# menu.title('The Penguins of SWIFT')
-# w = 500
-# h = 500
-# ws = menu.winfo_screenwidth()
-# hs = menu.winfo_screenheight()
-
-# x = (ws/2) - (w/2)
-# y = (hs/2) - (h/2)
-
-# menu.geometry('%dx%d+%d+%d' % (w, h, x, y))
-# start = Button(menu, text='Check',
-#                command=lambda: firstround.checkSolution(), height=2, width=10)
-# start.place(relx=0.5, rely=0.55, anchor='center')
-# menu.after(2000, firstround.createImage())
-# menu.mainloop()
-
-
-###### GIT CANNOT SEE THIS######
+# #string to encode
+# string = 'pppfoo???'
+# #convert string to bytes
+# string_encode = string.encode('utf-8')
+# #ecode in base 64
+# encoded = base64.b64encode(string_encode, altchars=b'-:')
+# #display encode data
+# print(encoded)
+# #decode from base 64
+# decoded = base64.b64decode(encoded,  altchars=b'-:')
+# #convert from bytes to string and display
+# print(decoded.decode('utf-8'))
+# #print(string.decode('utf-8'))

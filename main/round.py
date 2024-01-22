@@ -23,9 +23,10 @@ import docker
 import subprocess
 from tkinter import *
 from tkinter import messagebox
+import base64
 
 class round0:
-    
+    flg = "UGVuZ3VpbkZsYWc="
 
     # static --> constant for all rounds
     def __str__(self) -> str:
@@ -36,7 +37,8 @@ class round0:
         self.name = "round{}".format(self.roundNumber)
         self.roundStatus = False
         self.directory = "{}/rounds/round{}".format(scriptD, self.roundNumber)
-        self.__flag = "Hi"
+        
+        
 
     # static --> constant for all rounds
 
@@ -58,7 +60,7 @@ class round0:
         menu.geometry('%dx%d+%d+%d' % (w, h, x, y))
         start = Button(menu, text='Check',
                command=lambda: self.checkSolution(menu), height=2, width=10)
-        start.place(relx=0.5, rely=0.55, anchor='center')
+        start.place(relx=0.5, rely=0.70, anchor='center')
         
         
         menu.after(2000, self.enterImage())
@@ -83,7 +85,38 @@ class round0:
 
 
     def wrongAnswer(self,error):
-        messagebox.showerror("YOU ARE WRONG!", f"Error: \n{error}")
+        root = Tk()
+        root.config(bg="coral1")
+        root.title("INCORRECT ANSWER")
+        w = 450
+        h = 150
+        ws = root.winfo_screenwidth()
+        hs = root.winfo_screenheight()
+
+        x = (ws/2) - (w/2)
+        y = (hs/2) - (h/2)
+
+        root.geometry('%dx%d+%d+%d' % (w, h, x, y))
+        frame = Frame(root,bg="coral1")
+        frame.pack()
+        
+        
+        check = Label(frame, text=u'\u2716',font=("Arial",55),fg="Red",padx=20,pady=5,bg="coral1")
+
+        check.pack(side= LEFT)
+        text = Label(frame, text=f'{error}',font=("Arial",12),bg="coral1")
+        text.pack(side= RIGHT)
+        okay = Button(root,
+                text='Ok',
+                command=lambda: root.destroy(),
+                height=1, width=10
+                ) 
+        okay.place(relx=0.5,
+                rely=0.80,
+                anchor='w'
+                )
+        
+        root.mainloop()
         
     def correctAnswer(self,string, roundMenu):
         
@@ -107,11 +140,13 @@ class round0:
             client = docker.from_env()
             client.containers.get(self.name).remove(force=True)
             client.images.remove(self.name)
+            client.images.remove("ubuntu:22.04")
         
         check = Label(frame, text=u'\u2713',font=("Arial",55),fg="Green",padx=20,pady=5,bg="light green")
 
         check.pack(side= LEFT)
-        text = Label(frame, text="Correct! Here is your flag:\n" f"\'{self.__flag}\'",font=("Arial",15),bg="light green")
+        bin = base64.b64decode(self.flg)
+        text = Label(frame, text="Correct! Here is your flag:\n" f"{{{bin.decode('utf-8')}}}",font=("Arial",15),bg="light green")
         text.pack(side= RIGHT)
         next = Button(root,
                 text='Next round',

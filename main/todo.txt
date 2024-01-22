@@ -1,7 +1,7 @@
 Create a proper round(s)
 Define checkSolution function for each round
-Change up wrongAnswer GUI
 End game GUI
+correctAnswer GUI error handle on X
 
 Add a description file in each round's directory 
 
