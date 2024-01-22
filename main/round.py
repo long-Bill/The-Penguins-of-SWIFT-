@@ -26,12 +26,14 @@ from tkinter import messagebox
 import base64
 
 class round0:
-    flg = "UGVuZ3VpbkZsYWc="
-
+    flg = "UGVuZ3VpbkZsYWc=" # --> Change for each class
+    title = "Getting Started" # --> Change for each class
+    description = "King Julien asks you to put this string in the FirstFlag.txt: \n \"Morris give me flag\" " # --> Change for each class
     # static --> constant for all rounds
     def __str__(self) -> str:
         return self.directory + " " + self.name
     
+    # static --> constant for all rounds
     def __init__(self, roundNumber, scriptD):
         self.roundNumber = roundNumber
         self.name = "round{}".format(self.roundNumber)
@@ -58,7 +60,14 @@ class round0:
         y = (hs/2) - (h/2)
 
         menu.geometry('%dx%d+%d+%d' % (w, h, x, y))
-        start = Button(menu, text='Check',
+        title = Label(menu, text=f'{self.title}', font=("Monospace",20))
+        title.place(relx=0.5,rely=0.05, anchor='center')
+        scenario = Label(menu, text="Scenario", font=("Monospace",13))
+        scenario.place(relx=0.05,rely=0.20)
+        text = Text(menu, width= 55, height= 10,wrap=WORD)
+        text.insert(END, self.description)
+        text.place(relx=0.05, rely=0.25)
+        start = Button(menu, text='Check', 
                command=lambda: self.checkSolution(menu), height=2, width=10)
         start.place(relx=0.5, rely=0.70, anchor='center')
         
@@ -101,10 +110,10 @@ class round0:
         frame.pack()
         
         
-        check = Label(frame, text=u'\u2716',font=("Arial",55),fg="Red",padx=20,pady=5,bg="coral1")
+        check = Label(frame, text=u'\u2716',font=("Monospace",55),fg="Red",padx=20,pady=5,bg="coral1")
 
         check.pack(side= LEFT)
-        text = Label(frame, text=f'{error}',font=("Arial",12),bg="coral1")
+        text = Label(frame, text=f'{error}',font=("Monospace",12),bg="coral1")
         text.pack(side= RIGHT)
         okay = Button(root,
                 text='Ok',
@@ -123,7 +132,7 @@ class round0:
         root = Tk()
         root.config(bg="light green")
         root.title("CORRECT ANSWER")
-        w = 400
+        w = 500
         h = 150
         ws = root.winfo_screenwidth()
         hs = root.winfo_screenheight()
@@ -142,12 +151,15 @@ class round0:
             client.images.remove(self.name)
             client.images.remove("ubuntu:22.04")
         
-        check = Label(frame, text=u'\u2713',font=("Arial",55),fg="Green",padx=20,pady=5,bg="light green")
+        check = Label(frame, text=u'\u2713',font=("Monospace",55),fg="Green",padx=20,pady=5,bg="light green")
 
         check.pack(side= LEFT)
         bin = base64.b64decode(self.flg)
-        text = Label(frame, text="Correct! Here is your flag:\n" f"{{{bin.decode('utf-8')}}}",font=("Arial",15),bg="light green")
+        text = Text(frame, font=("Monospace",15),bg="light green",width=25, height= 5, borderwidth=0, highlightthickness = 0, wrap=WORD)
+        text.insert(END, "Correct! Here is your flag:\n" f"{{{bin.decode('utf-8')}}}")
         text.pack(side= RIGHT)
+        #text = Label(frame, text="Correct! Here is your flag:\n" f"{{{bin.decode('utf-8')}}}",font=("Monospace",15),bg="light green")
+        #text.pack(side= RIGHT)
         next = Button(root,
                 text='Next round',
                 command=lambda: close(),
@@ -166,7 +178,7 @@ class round0:
         ls = subprocess.run(
             ['docker', 'exec', '-it', 'round0', 'cat', 'FirstFlag.txt'], capture_output=True, text=True)
         check = subprocess.run(
-            ['grep', 'Give me flag'], capture_output=True, text=True, input=ls.stdout)
+            ['grep', 'Morris give me flag'], capture_output=True, text=True, input=ls.stdout)
         if(check.returncode == 0 ):
             
             self.correctAnswer("you did it", mainMenu)
