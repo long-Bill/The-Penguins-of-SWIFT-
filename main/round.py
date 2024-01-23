@@ -29,10 +29,17 @@ class round0:
     flg = "UGVuZ3VpbkZsYWc=" # --> Change for each class
     title = "Getting Started" # --> Change for each class
     description = "King Julien asks you to put this string in the FirstFlag.txt: \n \"Morris give me flag\" " # --> Change for each class
+    
     # static --> constant for all rounds
     def __str__(self) -> str:
         return self.directory + " " + self.name
     
+    #Class method for roundStatus
+    
+    def trueRoundStatus(self):
+        self.roundStatus = True
+
+
     # static --> constant for all rounds
     def __init__(self, roundNumber, scriptD):
         self.roundNumber = roundNumber
@@ -40,7 +47,7 @@ class round0:
         self.roundStatus = False
         self.directory = "{}/rounds/round{}".format(scriptD, self.roundNumber)
         
-        
+    
 
     # static --> constant for all rounds
 
@@ -126,9 +133,10 @@ class round0:
                 )
         
         root.mainloop()
-        
-    def correctAnswer(self,string, roundMenu):
-        
+
+      
+    def correctAnswer(self,roundMenu):
+        self.trueRoundStatus()
         root = Tk()
         root.config(bg="light green")
         root.title("CORRECT ANSWER")
@@ -139,11 +147,12 @@ class round0:
 
         x = (ws/2) - (w/2)
         y = (hs/2) - (h/2)
-
+        
         root.geometry('%dx%d+%d+%d' % (w, h, x, y))
         frame = Frame(root,bg="light green")
         frame.pack()
         def close():
+            
             root.destroy()
             roundMenu.destroy()
             client = docker.from_env()
@@ -158,8 +167,6 @@ class round0:
         text = Text(frame, font=("Monospace",15),bg="light green",width=25, height= 5, borderwidth=0, highlightthickness = 0, wrap=WORD)
         text.insert(END, "Correct! Here is your flag:\n" f"{{{bin.decode('utf-8')}}}")
         text.pack(side= RIGHT)
-        #text = Label(frame, text="Correct! Here is your flag:\n" f"{{{bin.decode('utf-8')}}}",font=("Monospace",15),bg="light green")
-        #text.pack(side= RIGHT)
         next = Button(root,
                 text='Next round',
                 command=lambda: close(),
@@ -181,7 +188,7 @@ class round0:
             ['grep', 'Morris give me flag'], capture_output=True, text=True, input=ls.stdout)
         if(check.returncode == 0 ):
             
-            self.correctAnswer("you did it", mainMenu)
+            self.correctAnswer(mainMenu)
         else:
             self.wrongAnswer("Incorrect answer, check file again")
             

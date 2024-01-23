@@ -26,7 +26,6 @@ def dependencies(root):
         ['sudo', 'apt', 'update', '-y'], capture_output=True, text=True)
     package = subprocess.run(['grep', 'command not found'],
                              capture_output=True, text=True, input=update.stdout)
-    print(update.stdout, package.stdout)
 
     # Installs packages using YUM if it isn't a Debian based distro
     if (update.returncode == 1 and package.returncode == 1):
@@ -40,9 +39,7 @@ def dependencies(root):
             ['sudo', 'apt', 'install', 'python-tk','python3-pip','python-dev', '-y'], capture_output=True, text=True)
         d = subprocess.run(['sudo', 'apt-get', 'install', 'docker-ce', 'docker-ce-cli', 'containerd.io', 'docker-buildx-plugin', 'docker-compose-plugin', '-y'],
                                 capture_output=True, text=True)
-        pip = subprocess.run(['sudo','pip','install','docker'])
-        print(tkinterPip.stdout)
-        print(d.stdout)
+        subprocess.run(['sudo','pip','install','docker'],capture_output=True)
 
         
         roundContainer = subprocess.run(['docker','ps','--filter','name=^round','-aq'],capture_output=True,text=True)
@@ -59,6 +56,9 @@ def dependencies(root):
                 client.images.remove(image.id,force=True)
                 
         root.destroy()
+        subprocess.run(['clear'])
+        
+
 
 ############### Main ###########################
 gameStatus = True
@@ -69,8 +69,10 @@ def quitGame(gui):
     sys.exit()
 
 def closing_menu():
-            if (messagebox.askokcancel("Quit","Are you sure?")):
-                quitGame(menu)
+        if (messagebox.askokcancel("Quit","Are you sure?")):
+            quitGame(menu)
+
+
 menu = Tk()
 menu.protocol("WM_DELETE_WINDOW" , closing_menu)
 
@@ -105,18 +107,49 @@ menu.mainloop()
 if (gameStatus):
     script_directory = os.path.dirname(os.path.abspath(sys.argv[0]))
     roundDirectory = f'{script_directory}/rounds/'
-    print(roundDirectory)
     numberOfDirectory = (len(next(os.walk(roundDirectory))[1]))
     rounds = [numberOfDirectory]
-    for rIndex in range(0,len(rounds)):
 
+    roundsCompleted = 0
+    for rIndex in range(0,len(rounds)):
+        subprocess.run(['echo','Creating Image, please wait.'])
         roundClass = globals()[f'round{rIndex}']
         rounds[rIndex]= roundClass(rIndex,script_directory)
         currentRound = rounds[rIndex]
         
         currentRound.createImage()
+        subprocess.run(['clear'])
         currentRound.startGame()
-    print("\nYOU WIN")
+        
+        if (currentRound.roundStatus == True):
+             roundsCompleted = roundsCompleted + 1
+
+    endMenu = Tk()
+
+    endMenu.title('End of Game')
+    w = 500
+    h = 250
+    ws = endMenu.winfo_screenwidth()
+    hs = endMenu.winfo_screenheight()
+
+    x = (ws/2) - (w/2)
+    y = (hs/2) - (h/2)
+
+    endMenu.geometry('%dx%d+%d+%d' % (w, h, x, y))
+
+    Progress = Label(endMenu, text=f'Completed rounds: {roundsCompleted} / {len(rounds)}', font=("Monospace",25))
+    Progress.place(relx= 0.5, rely=0.3, anchor='center')
+    quit = Button(endMenu,
+                text='Quit',
+                command=lambda: quitGame(endMenu),
+                height=2, width=10
+                )
+    quit.place(relx=0.5,
+            rely=0.70,
+            anchor='center'
+            )
+
+    endMenu.mainloop() 
         
     
 
