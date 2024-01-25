@@ -108,21 +108,24 @@ if (gameStatus):
     script_directory = os.path.dirname(os.path.abspath(sys.argv[0]))
     roundDirectory = f'{script_directory}/rounds/'
     numberOfDirectory = (len(next(os.walk(roundDirectory))[1]))
-    rounds = [numberOfDirectory]
+    
 
     roundsCompleted = 0
-    for rIndex in range(0,len(rounds)):
+    for rIndex in range(0,numberOfDirectory):
         subprocess.run(['echo','Creating Image, please wait.'])
         roundClass = globals()[f'round{rIndex}']
-        rounds[rIndex]= roundClass(rIndex,script_directory)
-        currentRound = rounds[rIndex]
+        currentRound  = roundClass(rIndex,script_directory)
+        
         
         currentRound.createImage()
         subprocess.run(['clear'])
         currentRound.startGame()
-        
+        if(currentRound.quitGame == True):
+            break
+
         if (currentRound.roundStatus == True):
              roundsCompleted = roundsCompleted + 1
+        subprocess.run(['clear'])
 
     endMenu = Tk()
 
@@ -137,7 +140,7 @@ if (gameStatus):
 
     endMenu.geometry('%dx%d+%d+%d' % (w, h, x, y))
 
-    Progress = Label(endMenu, text=f'Completed rounds: {roundsCompleted} / {len(rounds)}', font=("Monospace",25))
+    Progress = Label(endMenu, text=f'Completed rounds: {roundsCompleted} / {numberOfDirectory}', font=("Monospace",25))
     Progress.place(relx= 0.5, rely=0.3, anchor='center')
     quit = Button(endMenu,
                 text='Quit',

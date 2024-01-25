@@ -45,6 +45,7 @@ class round0:
         self.roundNumber = roundNumber
         self.name = "round{}".format(self.roundNumber)
         self.roundStatus = False
+        self.quitGame = False
         self.directory = "{}/rounds/round{}".format(scriptD, self.roundNumber)
         
     
@@ -55,6 +56,7 @@ class round0:
         def closing_menu():
             if (messagebox.askokcancel("Quit","Are you sure?")):
                 menu.destroy()
+                self.quitGame = True
         menu = Tk()
         menu.protocol("WM_DELETE_WINDOW" , closing_menu)
         menu.title(self.name)
@@ -192,5 +194,20 @@ class round0:
         else:
             self.wrongAnswer("Incorrect answer, check file again")
             
-        
+class round1(round0):
+    flg = "TmV3WW9yaw==" # --> Change for each class
+    title = "Central Park" # --> Change for each class
+    description = "King Julien asks you to put this string in the FirstFlag.txt: \n \"You didn\'t copy it !\"" # --> Change for each class
+
+    def checkSolution(self,mainMenu):
+        ls = subprocess.run(
+            ['docker', 'exec', '-it', 'round1', 'cat', 'FirstFlag.txt'], capture_output=True, text=True)
+        check = subprocess.run(
+            ['grep', 'You didn\'t copy it!'], capture_output=True, text=True, input=ls.stdout)
+        if(check.returncode == 0 ):
+            
+            self.correctAnswer(mainMenu)
+        else:
+            self.wrongAnswer("Incorrect answer, check file again")
+            
 
