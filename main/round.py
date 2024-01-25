@@ -56,6 +56,10 @@ class round0:
         def closing_menu():
             if (messagebox.askokcancel("Quit","Are you sure?")):
                 menu.destroy()
+                client = docker.from_env()
+                client.containers.get(self.name).remove(force=True)
+                client.images.remove(self.name)
+                client.images.remove("ubuntu:22.04")
                 self.quitGame = True
         menu = Tk()
         menu.protocol("WM_DELETE_WINDOW" , closing_menu)

@@ -121,6 +121,7 @@ if (gameStatus):
         subprocess.run(['clear'])
         currentRound.startGame()
         if(currentRound.quitGame == True):
+            subprocess.run(['clear'])
             break
 
         if (currentRound.roundStatus == True):
