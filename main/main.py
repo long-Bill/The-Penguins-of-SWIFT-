@@ -111,23 +111,39 @@ if (gameStatus):
     
 
     roundsCompleted = 0
-    for rIndex in range(0,numberOfDirectory):
-        subprocess.run(['echo','Creating Image, please wait.'])
-        roundClass = globals()[f'round{rIndex}']
-        currentRound  = roundClass(rIndex,script_directory)
+    #Actual GAME
+    # for rIndex in range(0,numberOfDirectory):
+    #     subprocess.run(['echo','Creating Image, please wait.'])
+    #     roundClass = globals()[f'round{rIndex}']
+    #     currentRound  = roundClass(rIndex,script_directory)
         
         
-        currentRound.createImage()
-        subprocess.run(['clear'])
-        currentRound.startGame()
-        if(currentRound.quitGame == True):
-            subprocess.run(['clear'])
-            break
+    #     currentRound.createImage()
+    #     subprocess.run(['clear'])
+    #     currentRound.startGame()
+    #     if(currentRound.quitGame == True):
+    #         subprocess.run(['clear'])
+    #         break
 
-        if (currentRound.roundStatus == True):
-             roundsCompleted = roundsCompleted + 1
-        subprocess.run(['clear'])
+    #     if (currentRound.roundStatus == True):
+    #          roundsCompleted = roundsCompleted + 1
+    #     subprocess.run(['clear'])
 
+    # For single round testing **BEGIN***
+    currentRound = round1(1,script_directory)
+        
+        
+    currentRound.createImage()
+    subprocess.run(['clear'])
+    currentRound.startGame()
+    if(currentRound.quitGame == True):
+        subprocess.run(['clear'])
+        #break
+
+    if (currentRound.roundStatus == True):
+            roundsCompleted = roundsCompleted + 1
+    subprocess.run(['clear'])
+    #***End***
     endMenu = Tk()
 
     endMenu.title('End of Game')

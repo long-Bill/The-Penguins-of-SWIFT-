@@ -1,22 +1,24 @@
 FROM ubuntu:22.04
 
 RUN apt-get update -y \
-    && apt-get install nano -y
+    && apt-get install nano -y 
 
 
 
-RUN addgroup gamer
 
-RUN useradd -m -d /home/gamer -s /bin/bash -g gamer -u 1001 gamer
+RUN addgroup private
+
+
+RUN useradd -m -d /home/private -s /bin/bash -g private -u 1001 private
 
 RUN echo "alias exit='echo \"NONE SHALL LEAVE, OR ELSE\"'" >> /etc/bash.bashrc
 
-COPY FirstFlag.txt /home/gamer/
-RUN chown -R gamer:gamer /home/gamer/FirstFlag.txt
+COPY MyMessage.txt /home/private/
+RUN chown -R private:private /home/private/MyMessage.txt
 
-USER gamer
+USER private
 
-WORKDIR /home/gamer
+WORKDIR /home/private
 
 
 

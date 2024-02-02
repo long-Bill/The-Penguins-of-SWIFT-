@@ -26,9 +26,9 @@ from tkinter import messagebox
 import base64
 
 class round0:
-    flg = "UGVuZ3VpbkZsYWc=" # --> Change for each class
-    title = "Getting Started" # --> Change for each class
-    description = "King Julien asks you to put this string in the FirstFlag.txt: \n \"Morris give me flag\" " # --> Change for each class
+    flg = "UEBydHlUaW1lIQ==" # --> Change for each class
+    title = "The First Time" # --> Change for each class
+    description = "Private just became an intern for SWIFT and barely knows how to use Linux. He is given a text string from King Julien and needs to be placed in the \"MyMessage.txt\" file. The text string is: \n\"Morris where are my party flags!\" " # --> Change for each class
     
     # static --> constant for all rounds
     def __str__(self) -> str:
@@ -189,9 +189,9 @@ class round0:
     # Will be dynamic for each round
     def checkSolution(self,mainMenu):
         ls = subprocess.run(
-            ['docker', 'exec', '-it', 'round0', 'cat', 'FirstFlag.txt'], capture_output=True, text=True)
+            ['docker', 'exec', '-it', self.name, 'cat', 'MyMessage.txt'], capture_output=True, text=True)
         check = subprocess.run(
-            ['grep', 'Morris give me flag'], capture_output=True, text=True, input=ls.stdout)
+            ['grep', 'Morris where are my party flags!'], capture_output=True, text=True, input=ls.stdout)
         if(check.returncode == 0 ):
             
             self.correctAnswer(mainMenu)
@@ -199,19 +199,34 @@ class round0:
             self.wrongAnswer("Incorrect answer, check file again")
             
 class round1(round0):
-    flg = "TmV3WW9yaw==" # --> Change for each class
-    title = "Central Park" # --> Change for each class
-    description = "King Julien asks you to put this string in the FirstFlag.txt: \n \"You didn\'t copy it !\"" # --> Change for each class
+    flg = "QWZyMWNAX2hhc19QZW5ndTFucz8=" # --> Change for each class
+    title = "Search and Retrieve" # --> Change for each class
+    description = "Skipper has asked Private to search for a file entitled  \"Route-To-Madagascar\"  hidden somewhere in the system. Retrieve the file while keeping its content and place it at Skipper's home directory as a hidden file. \n  Rename the file to \"Skipper_Plan\"." # --> Change for each class
 
     def checkSolution(self,mainMenu):
-        ls = subprocess.run(
-            ['docker', 'exec', '-it', 'round1', 'cat', 'FirstFlag.txt'], capture_output=True, text=True)
-        check = subprocess.run(
-            ['grep', 'You didn\'t copy it!'], capture_output=True, text=True, input=ls.stdout)
-        if(check.returncode == 0 ):
-            
-            self.correctAnswer(mainMenu)
+        fileName = subprocess.run(
+            ['docker','exec','-it',self.name,'ls','/home/skipper/.Skipper_Plan'], capture_output=True, text=True
+        )
+        if(fileName.returncode == 0):
+            sum = subprocess.run(
+                ['docker','exec','-it',self.name,'sha256sum','/home/skipper/.Skipper_Plan'],capture_output=True, text=True
+            )
+            if("05b4de00eca348f04d2e9272fd2fc8838e172512e04010a4d388d1d47a9b9dea" in sum.stdout):
+                self.correctAnswer(mainMenu)
+            else:
+                self.wrongAnswer("Content mismatch")
         else:
-            self.wrongAnswer("Incorrect answer, check file again")
+            self.wrongAnswer("File: Skipper_Plan not found")
+            
+    
+        # ls = subprocess.run(
+        #     ['docker', 'exec', '-it', 'round1', 'cat', 'FirstFlag.txt'], capture_output=True, text=True)
+        # check = subprocess.run(
+        #     ['grep', 'You didn\'t copy it!'], capture_output=True, text=True, input=ls.stdout)
+        # if(check.returncode == 0 ):
+            
+        #     self.correctAnswer(mainMenu)
+        # else:
+        #     self.wrongAnswer("Incorrect answer, check file again")
             
 
