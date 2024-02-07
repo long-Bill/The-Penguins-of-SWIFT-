@@ -39,7 +39,7 @@ def dependencies(root):
             ['sudo', 'apt', 'install', 'python-tk','python3-pip','python-dev', '-y'], capture_output=True, text=True)
         d = subprocess.run(['sudo', 'apt-get', 'install', 'docker-ce', 'docker-ce-cli', 'containerd.io', 'docker-buildx-plugin', 'docker-compose-plugin', '-y'],
                                 capture_output=True, text=True)
-        subprocess.run(['sudo','pip','install','docker'],capture_output=True)
+        subprocess.run(['sudo','pip','install','docker','pexpect'],capture_output=True)
 
         
         roundContainer = subprocess.run(['docker','ps','--filter','name=^round','-aq'],capture_output=True,text=True)
@@ -130,7 +130,7 @@ if (gameStatus):
     #     subprocess.run(['clear'])
 
     # For single round testing **BEGIN***
-    currentRound = round1(1,script_directory)
+    currentRound = round2(2,script_directory)
         
         
     currentRound.createImage()

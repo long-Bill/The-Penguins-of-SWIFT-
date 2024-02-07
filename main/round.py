@@ -218,15 +218,60 @@ class round1(round0):
         else:
             self.wrongAnswer("File: Skipper_Plan not found")
             
+class round2(round0):
     
-        # ls = subprocess.run(
-        #     ['docker', 'exec', '-it', 'round1', 'cat', 'FirstFlag.txt'], capture_output=True, text=True)
-        # check = subprocess.run(
-        #     ['grep', 'You didn\'t copy it!'], capture_output=True, text=True, input=ls.stdout)
-        # if(check.returncode == 0 ):
+    flg = "S0BuZ2Fyb28=" # --> Change for each class
+    title = "New Personnel" # --> Change for each class
+    description = "Skipper tasks Private to create an account on the machine for every penguin. Create users for \"kowalski\", \"rico\", and \"private\". Set their passwords to \"$butterb@11\". Create a home directory for each user, set the shell to /bin/bash, and assign them to groups respective to their names."  # --> Change for each class
+
+    def checkSolution(self,mainMenu):
+        import pexpect
+        userList = ["kowalski", "rico","skipper"]
+        errorUser = []
+        
+        passwd = subprocess.run(['docker','exec','-it',self.name,'cat','/etc/passwd'],capture_output=True,text=True)
+        for user in userList: 
+            userFound = False
+            id = subprocess.run(['docker','exec','-it',self.name,'id',f'{user}'],capture_output=True,text=True)
             
-        #     self.correctAnswer(mainMenu)
-        # else:
-        #     self.wrongAnswer("Incorrect answer, check file again")
+            if("no such user" in id.stdout ):
+                userFound = False
+            else:
+                #Finds the group name
+                group = subprocess.run(['awk','-F ','{{print $3}}'],capture_output=True,text=True,input=id.stdout)
+                if(user in group.stdout):
+                    for line in passwd.stdout.split('\n'):
+                        
+                        if ((user in line) and (f'/home/{user}' in line) and ("/bin/bash" in line)):
+                            userFound = True
+                            
+            if(userFound == False):
+                errorUser.append(user)
+
+        if(errorUser):
+            userErrors = ""
+            for string in errorUser:
+                userErrors += string + " "
+            self.wrongAnswer(f'{userErrors} - Incorrect! \ncheck username, home directory, \nor default shell')
+        else:
+            for user in userList:
+                child = pexpect.spawn(f'docker exec -it {self.name} su - {user} ')
+                child.expect("Password:")
+                child.sendline("$butterb@11")
+                try:
+                    child.expect('\$')
+                except:
+                    errorUser.append(user)
+                
+            if(not errorUser):
+                self.correctAnswer(mainMenu)
+            elif(errorUser):
+                userErrors = ""
+                for string in errorUser:
+                    userErrors += string + " "
+                    self.wrongAnswer(f'Incorrect! \nUsers: {userErrors} - password is incorrect')
+
+        
+
             
 
