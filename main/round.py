@@ -23,6 +23,7 @@ import docker
 import subprocess
 from tkinter import *
 from tkinter import messagebox
+from tkinter import scrolledtext
 import base64
 
 class round0:
@@ -77,8 +78,9 @@ class round0:
         title.place(relx=0.5,rely=0.05, anchor='center')
         scenario = Label(menu, text="Scenario", font=("Monospace",13))
         scenario.place(relx=0.05,rely=0.20)
-        text = Text(menu, width= 55, height= 10,wrap=WORD)
+        text = scrolledtext.ScrolledText(menu, width= 55, height= 10,wrap=WORD)
         text.insert(END, self.description)
+        text.configure(state ='disabled')      
         text.place(relx=0.05, rely=0.25)
         start = Button(menu, text='Check', 
                command=lambda: self.checkSolution(menu), height=2, width=10)
@@ -110,8 +112,8 @@ class round0:
         root = Tk()
         root.config(bg="coral1")
         root.title("INCORRECT ANSWER")
-        w = 450
-        h = 150
+        w = 525
+        h = 175
         ws = root.winfo_screenwidth()
         hs = root.winfo_screenheight()
 
@@ -271,7 +273,72 @@ class round2(round0):
                     userErrors += string + " "
                     self.wrongAnswer(f'Incorrect! \nUsers: {userErrors} - password is incorrect')
 
-        
+class round3(round0):
+    
+    flg = "bWFuaEB0dGFuIQ==" # --> Change for each class
+    title = "Demoted" # --> Change for each class
+    description = "King Julien is angered by Mort's incompetence and demands Private to have his sudo privileges revoked. Remove Mort's sudo privileges."    
 
+    def checkSolution(self,mainMenu):
+        sudo = subprocess.run(
+            ['docker', 'exec', '-it', self.name, 'grep','sudo','/etc/group'], capture_output=True, text=True)
+        if("mort" in sudo.stdout):
+            self.wrongAnswer("WRONG! \nMORT STILL HAS SUDO")
+        elif("mort" not in sudo.stdout):
+            self.correctAnswer(mainMenu)
             
+class round4(round0):
+    
+    flg = "Qm95c18xbV9GQG1vdVM=" # --> Change for each class
+    title = "How Many What?" # --> Change for each class
+    description = "Skipper has a special request for Private. Skipper wants Private to find the total occurence of the string \"Skipper:\" in his home directory, for research purposes of course. Once you find the number, put it in a file named \"myFame.txt\" in Skipper's home directory."
 
+    def checkSolution(self,mainMenu):
+        textFile = subprocess.run(
+            ['docker','exec','-it',self.name,'cat','/home/skipper/myFame.txt'],capture_output=True,text=True
+        )
+
+        if(textFile.returncode == 0 and "258" in textFile.stdout):
+            self.correctAnswer(mainMenu)
+        elif(textFile.returncode == 0 and '258' not in textFile.stdout):
+            self.wrongAnswer("Error!\nThe total number is incorrect.")
+        else:
+            self.wrongAnswer("Error!\nThe file \"myFame.txt\" was not found.")
+
+
+class round5(round0):
+    
+    flg = "eXVtbXlfcDNhbnV0cw==" # --> Change for each class
+    title = "DUPLICATES????" # --> Change for each class
+    description = "Mort is keeping tracking of what everyone is doing around the zoo. He has created a file called zoo.csv that lists the names of all inhabitants in the Central Park Zoo, their species, and what they're doing. However, zoo.csv contains duplicate name entries. King Julien wants this to happen. \n\nName duplicates removed. \n\nThe names to be rearranged in alphabetical order. \n\nOn a number list. \n\nThe file should be named as \"Names_in_the_zoo.txt\" in private's home directory and should only contain names."
+
+    def checkSolution(self,mainMenu):
+        matched = False
+        errorLine =""
+        file = subprocess.run(
+            ['docker','exec','-it',self.name,'cat','/home/private/Names_in_the_zoo.txt'],capture_output=True,text=True
+        )     
+        if(file.returncode == 1):
+            self.wrongAnswer("Error!\nFile: \n\"Names_in_the_zoo.txt\" not found.") 
+        elif(file.returncode == 0):
+            nameList = ["Alex","Dave","Gloria","Joey","King Julien","Kowalski","Marlene","Marty"
+                        ,"Mason","Maurice","Melman","Mort","Nana","Private","Rico","Skipper"]
+            i = 1
+            for line in file.stdout.split('\n'):
+                if(str(i) in line and nameList[i-1] in line and i <= 16):
+                    matched = True
+                    i += 1
+                elif(i <= 16):
+                    matched = False
+                    errorLine = line
+                    break
+            if(matched == False):
+                self.wrongAnswer(f'"{errorLine}" was a missed match')
+            elif(matched == True):
+                self.correctAnswer(mainMenu)
+        else:
+            self.wrongAnswer("WHAT DID YOU DO!!")
+        
+        
+        
+#awk -F, '{print $1}' zoo.csv | tail +2 |sort -u | nl > ~/Names_in_the_zoo.txt
