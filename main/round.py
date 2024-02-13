@@ -29,7 +29,7 @@ import base64
 class round0:
     flg = "UEBydHlUaW1lIQ==" # --> Change for each class
     title = "The First Time" # --> Change for each class
-    description = "Private just became an intern for SWIFT and barely knows how to use Linux. He is given a text string from King Julien and needs to be placed in the \"MyMessage.txt\" file. The text string is: \n\"Morris where are my party flags!\" " # --> Change for each class
+    description = "Private just became an intern for SWIFT and barely knows how to use Linux. He is given a text string from King Julien and needs to be placed in the \"MyMessage.txt\" file. The text string is: \n\"Maurice where are my party flags!\" " # --> Change for each class
     
     # static --> constant for all rounds
     def __str__(self) -> str:
@@ -340,5 +340,73 @@ class round5(round0):
             self.wrongAnswer("WHAT DID YOU DO!!")
         
         
-        
-#awk -F, '{print $1}' zoo.csv | tail +2 |sort -u | nl > ~/Names_in_the_zoo.txt
+class round6(round0):
+    flg = "MG4xeV9yb290X0lT" # --> Change for each class
+    title = "Who's Allowed In?" # --> Change for each class
+    description = "Private made several mistakes configuring Skipper and Rico's home directory. Kowalski is responsible for reconfiguring these home directories as well as certain files in each directory. \n\n- Home directories must be owned by the corresponding owner (Skipper owns Skipper's home directory) and have full permissions. \n\n- Members of the central_park group can only view files in the each directory.  \n\n- Other users cannot view the contents of each directories. \n\n- In each directory, the file \"Julien_Spy.txt\" can only be viewed by root."
+
+    def checkSolution(self, mainMenu):
+        names = ["rico","skipper"]
+        error = False
+        for penguin in names:
+            
+            listOfDir = [f'/home/{penguin}',f'/home/{penguin}/Documents',f'/home/{penguin}/Downloads']
+            for dir in listOfDir:
+                directory = subprocess.run(['docker','exec','-it',self.name,'ls','-ld',dir],capture_output=True,text=True)
+                if(directory.returncode == 2):
+                    self.wrongAnswer(f'{dir} \ndoesn\'t exists.')
+                    error = True
+                    break
+                elif(directory.returncode == 0):
+                    owner = subprocess.run(['awk','-F ','{{print $3}}'],capture_output=True,text=True, input=directory.stdout)
+                    
+                    group = subprocess.run(['awk','-F ','{{print $4}}'],capture_output=True,text=True, input=directory.stdout)
+                    if("central_park" not in group.stdout):
+                        self.wrongAnswer(f'{dir} does not have the \ncorrect group member.')
+                        error = True
+                        break
+                    if(penguin not in owner.stdout):
+                        self.wrongAnswer(f'{dir} does not have \nthe correct owner.')
+                        error = True
+                        break
+                    octal = subprocess.run(['docker','exec','-it',self.name,'stat','-c',"%a",dir],capture_output=True,text=True)
+                    if("770" in octal.stdout or "750" in octal.stdout): 
+                        error = False
+                    else:
+                        self.wrongAnswer(f'{dir} \nincorrect permissions.')
+                        error = True
+                        break
+                    julien = f'/home/{penguin}/Julien_Spy.txt'
+                    file = subprocess.run(['docker','exec','-it',self.name,'ls','-l',julien],capture_output=True,text=True)
+                    owner = subprocess.run(['awk','-F ','{{print $3}}'],capture_output=True,text=True, input=file.stdout)
+                    group = subprocess.run(['awk','-F ','{{print $4}}'],capture_output=True,text=True, input=file.stdout)
+                    if(file.returncode == 2):
+                        self.wrongAnswer("Julien_Spy.txt does not exists.")
+                        error = True
+                        break
+                    elif(file.returncode == 0):
+                        if("root" not in group.stdout):
+                            self.wrongAnswer(f'{julien} does not have the \ncorrect group member.')
+                            error = True
+                            break
+                        if("root" not in owner.stdout):
+                            self.wrongAnswer(f'{julien} does not have \nthe correct owner.')
+                            error = True
+                            break
+                        octal = subprocess.run(['docker','exec','-it',self.name,'stat','-c',"%a",julien],capture_output=True,text=True)
+                        if("770" in octal.stdout or "750" in octal.stdout or "570" in octal.stdout or "550" in octal.stdout): 
+                            error = False
+                        else:
+                            self.wrongAnswer(f'{julien} \nincorrect permissions.')
+                            error = True
+                            break
+            if(error):
+                break
+            
+        if(error == False):
+            self.correctAnswer(mainMenu)
+
+
+                   
+                
+            

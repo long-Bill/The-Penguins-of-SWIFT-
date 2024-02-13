@@ -11,7 +11,7 @@ RUN addgroup mort
 
 RUN useradd -m -d /home/private -s /bin/bash -g private -u 1001 private
 RUN usermod -a -G sudo private
-
+RUN echo "private:private" | chpasswd
 
 RUN useradd -m -d /home/king_julien -s /sbin/nologin -g king_julien -u 1002 king_julien
 
