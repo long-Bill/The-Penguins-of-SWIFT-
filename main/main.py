@@ -130,7 +130,7 @@ if (gameStatus):
     #     subprocess.run(['clear'])
 
     # For single round testing **BEGIN***
-    currentRound = round6(6,script_directory)
+    currentRound = round7(7,script_directory)
         
         
     currentRound.createImage()

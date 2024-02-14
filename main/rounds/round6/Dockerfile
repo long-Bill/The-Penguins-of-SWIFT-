@@ -7,11 +7,11 @@ RUN apt-get update -y \
 RUN addgroup central_park
 RUN addgroup skipper
 RUN addgroup rico
-RUN addgroup private
+RUN addgroup kowalski
 
-RUN useradd -m -d /home/private -s /bin/bash -g private -u 1001 private
-RUN usermod -a -G central_park,sudo private
-RUN echo "private:private" | chpasswd
+RUN useradd -m -d /home/kowalski -s /bin/bash -g kowalski -u 1001 kowalski
+RUN usermod -a -G central_park,sudo kowalski
+RUN echo "kowalski:kowalski" | chpasswd
 
 RUN useradd -m -d /home/skipper -s /sbin/login -g skipper -u 1002 skipper
 RUN usermod -a -G central_park skipper
@@ -38,6 +38,6 @@ RUN chmod 150 -R /home/rico/
 
 
 
-USER private
+USER kowalski
 
-WORKDIR /home/private
+WORKDIR /home/kowalski

@@ -128,8 +128,9 @@ class round0:
         check = Label(frame, text=u'\u2716',font=("Monospace",55),fg="Red",padx=20,pady=5,bg="coral1")
 
         check.pack(side= LEFT)
-        text = Label(frame, text=f'{error}',font=("Monospace",12),bg="coral1")
+        text = Label(frame, text=f'{error}',font=("Monospace",12),bg="coral1",fg="Black")
         text.pack(side= RIGHT)
+        
         okay = Button(root,
                 text='Ok',
                 command=lambda: root.destroy(),
@@ -173,8 +174,10 @@ class round0:
         check.pack(side= LEFT)
         bin = base64.b64decode(self.flg)
         text = Text(frame, font=("Monospace",15),bg="light green",width=25, height= 5, borderwidth=0, highlightthickness = 0, wrap=WORD)
+        
         text.insert(END, "Correct! Here is your flag:\n" f"{{{bin.decode('utf-8')}}}")
         text.pack(side= RIGHT)
+        text.configure(state ='disabled')
         next = Button(root,
                 text='Next round',
                 command=lambda: close(),
@@ -193,7 +196,7 @@ class round0:
         ls = subprocess.run(
             ['docker', 'exec', '-it', self.name, 'cat', 'MyMessage.txt'], capture_output=True, text=True)
         check = subprocess.run(
-            ['grep', 'Morris where are my party flags!'], capture_output=True, text=True, input=ls.stdout)
+            ['grep', 'Maurice where are my party flags!'], capture_output=True, text=True, input=ls.stdout)
         if(check.returncode == 0 ):
             
             self.correctAnswer(mainMenu)
@@ -406,7 +409,44 @@ class round6(round0):
         if(error == False):
             self.correctAnswer(mainMenu)
 
+class round7(round0):
+    flg = "T25lLXAzcnNvbi1qb2I=" # --> Change for each class
+    title = "The Fired Sysadmin" # --> Change for each class
+    description = "Before leaving SWIFT corp., Melmen the previous system administrator decided leave a surprise for Kowalski as a goodbye gift. Whenever Kowalski types a command ls or cd, it displays a message instead of executing the command. Help Kowalski fix this and get everything back on track."				
+				
+    
+class round8(round0):
+    flg = "cXUxY2tfYW5hbHlzMTI=" # --> Change for each class
+    title = "Sudoers" # --> Change for each class
+    description = "Kowalski is assigned to add more users with admin privileges. However, when using the sudo command, users are not required to enter their password. Find a way to enforce a password entry when using sudo. The users to add to the sudo group are \"king_julien\" and \"mort\". \nPassword for private is: private"					
+	
+    
+    def checkSolution(self, mainMenu):
+        error = False
+        userList = ['king_julien','mort']
+        for user in userList:
+            id = subprocess.run(['docker','exec','-it',self.name,'id',f'{user}'],capture_output=True,text=True)
+            if("sudo" not in id.stdout):
+                self.wrongAnswer(f'{user} is not apart of the sudo group')
+                error = True
+                break
+            else:
+                YESPasswd = subprocess.run(['docker','exec','-it','-u','root',self.name,'grep','-E','^%sudo.*(ALL:ALL)','/etc/sudoers'],capture_output=True,text=True)
+                noPasswd = subprocess.run(['docker','exec','-it','-u','root',self.name,'grep','-E','*%sudo.*NOPASSWD','/etc/sudoers'],capture_output=True,text=True)
+                if(noPasswd.returncode == 0 and "#" not in noPasswd.stdout):
+                    self.wrongAnswer("Incorrect! \nSudo users still do not require passwords.")
+                    error = True
+                    break
+                elif((noPasswd.returncode == 1 or "#" in noPasswd.stdout) and YESPasswd.returncode == 0):
+                    error = False
 
-                   
+        if(error == False):
+            self.correctAnswer(mainMenu)
                 
-            
+	
+					
+					
+										
+	
+
+        
