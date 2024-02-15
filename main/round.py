@@ -97,6 +97,7 @@ class round0:
         client.containers.run(
             detach=True,
             image=self.name,
+            cap_add="LINUX_IMMUTABLE",
             command="sleep infinity",
             name=self.name,
             tty=True,
@@ -412,9 +413,27 @@ class round6(round0):
 class round7(round0):
     flg = "T25lLXAzcnNvbi1qb2I=" # --> Change for each class
     title = "The Fired Sysadmin" # --> Change for each class
-    description = "Before leaving SWIFT corp., Melmen the previous system administrator decided leave a surprise for Kowalski as a goodbye gift. Whenever Kowalski types a command ls or cd, it displays a message instead of executing the command. Help Kowalski fix this and get everything back on track."				
+    description = "Before leaving SWIFT corp., Melmen, the previous system administrator, decided leave a surprise for Kowalski as a goodbye gift. Whenever Kowalski types a command, like ls or cd, it displays a message instead of executing the command. Help Kowalski fix this and get everything back on track.\n\nTIP: use su kowalski to check your commands\nPassword for kowalski: kowalski"				
 				
-    
+    def checkSolution(self, mainMenu):
+        user = "kowalski"
+        commands = ['ls','cat','cd','grep']
+        error = False
+        for com in commands:
+            alias = subprocess.run(['docker','exec','-it',self.name,'grep','-E',f'^[alias]*.{com}=',f'/home/{user}/.bashrc'],capture_output=True,text=True)
+            if(alias.returncode == 0 and "#" not in alias.stdout and "alias" in alias.stdout):
+                error = True
+                self.wrongAnswer(f'Incorrect\nThe command {com} is broken.')
+                break
+            elif(alias.returncode == 1):
+                error = False
+            elif("alias" not in alias.stdout or "#" in alias.stdout):
+                error = False
+            
+        if(error == False):
+            self.correctAnswer(mainMenu)
+
+
 class round8(round0):
     flg = "cXUxY2tfYW5hbHlzMTI=" # --> Change for each class
     title = "Sudoers" # --> Change for each class
