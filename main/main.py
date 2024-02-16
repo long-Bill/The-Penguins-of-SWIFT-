@@ -130,19 +130,20 @@ if (gameStatus):
     #     subprocess.run(['clear'])
 
     # For single round testing **BEGIN***
-    currentRound = round8(8,script_directory)
+    currentRound = round10(10,script_directory)
         
         
     currentRound.createImage()
     subprocess.run(['clear'])
     currentRound.startGame()
     if(currentRound.quitGame == True):
-        subprocess.run(['clear'])
+        print("hello")
+        #subprocess.run(['clear'])
         #break
-
-    if (currentRound.roundStatus == True):
+    
+    if (currentRound.roundStatus == True ):
             roundsCompleted = roundsCompleted + 1
-    subprocess.run(['clear'])
+    #subprocess.run(['clear'])
     #***End***
     endMenu = Tk()
 

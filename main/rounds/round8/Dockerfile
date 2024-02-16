@@ -4,6 +4,8 @@ RUN apt-get update -y \
     && apt-get install nano sudo -y 
 
 USER root
+
+
 RUN addgroup kowalski
 RUN addgroup penguins
 RUN addgroup mort
@@ -26,7 +28,6 @@ RUN echo "king_julien:king_julien" | chpasswd
 
 
 RUN echo "alias exit='echo \"NONE SHALL LEAVE, OR ELSE\"'" >> /etc/bash.bashrc
-RUN chattr +i /etc/bash.bashrc
 
 
 USER kowalski

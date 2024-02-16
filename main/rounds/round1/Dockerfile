@@ -17,7 +17,6 @@ RUN chmod 770 -R /home/skipper
 
 
 RUN echo "alias exit='echo \"NONE SHALL LEAVE, OR ELSE\"'" >> /etc/bash.bashrc
-
 COPY Route-To-Madagascar.txt /usr/bin/
 
 

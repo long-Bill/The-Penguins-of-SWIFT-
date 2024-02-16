@@ -56,6 +56,7 @@ class round0:
     def startGame(self):
         def closing_menu():
             if (messagebox.askokcancel("Quit","Are you sure?")):
+                subprocess.run(['docker', 'exec', '-it','-u','root', self.name, '/var/backups/chattr','-i','/etc/bash.bashrc'])
                 menu.destroy()
                 client = docker.from_env()
                 client.containers.get(self.name).remove(force=True)
@@ -97,7 +98,7 @@ class round0:
         client.containers.run(
             detach=True,
             image=self.name,
-            cap_add="LINUX_IMMUTABLE",
+            cap_add = "LINUX_IMMUTABLE",
             command="sleep infinity",
             name=self.name,
             tty=True,
@@ -106,8 +107,11 @@ class round0:
         )
         
     def enterImage(self):
+        #chattr is in /var/backups
+        subprocess.run(['docker', 'exec', '-it','-u','root', self.name, 'chattr','+i','/etc/bash.bashrc'])
+        subprocess.run(['docker', 'exec', '-it','-u','root', self.name, 'mv','/usr/bin/chattr','/var/backups/chattr'])
         subprocess.Popen(['docker', 'exec', '-it', self.name, '/bin/bash'])
-
+        
 
     def wrongAnswer(self,error):
         root = Tk()
@@ -162,7 +166,7 @@ class round0:
         frame = Frame(root,bg="light green")
         frame.pack()
         def close():
-            
+            subprocess.run(['docker', 'exec', '-it','-u','root', self.name, '/var/backups/chattr','-i','/etc/bash.bashrc'])
             root.destroy()
             roundMenu.destroy()
             client = docker.from_env()
@@ -462,10 +466,82 @@ class round8(round0):
         if(error == False):
             self.correctAnswer(mainMenu)
                 
+class round9(round0):
+    
+    flg = "WTMyX3JpYzAta2FiMDBt" # --> Change for each class
+    title = "For the Professionals" # --> Change for each class
+    description = "SECURITY ALERT!! Something is casuing the system to add more admin users and allowing system-destroying commands to be executed. Help Kowalski stop this and delete any users created from the cause."					
 	
-					
-					
-										
-	
-
+    def enterImage(self):
+        import time
+        subprocess.run(['docker','exec','-it','-u','root',self.name,'service','cron','start'],capture_output=True)
+        print("Give this round some extra time to build about 50 seconds. Remember to standup and walk around.")
+        time.sleep(60)
+        subprocess.run(['clear'])
         
+        super().enterImage()
+        
+
+    def checkSolution(self, mainMenu):
+        error = False
+        aux = subprocess.run(['docker','exec','-it',self.name,'ps','aux'],capture_output=True,text=True)
+        grep = subprocess.run(['grep','/root'],capture_output=True,text=True,input=aux.stdout)
+        
+        passwd = subprocess.run(['docker','exec','-it','-u','root',self.name,'cat','/etc/passwd'],capture_output=True,text=True)
+        users = subprocess.run(['grep','-E','^user*[0-9]'],capture_output=True,text=True,input=passwd.stdout)
+        kowalski = subprocess.run(['grep','kowalski'],capture_output=True,text=True,input=passwd.stdout)
+        #Bug
+        if((kowalski.returncode == 1)):
+            print("You broke the game, my fault...\nYou can play again :))")
+            mainMenu.destroy()
+            client = docker.from_env()
+            client.containers.get(self.name).remove(force=True)
+            client.images.remove(self.name)
+            client.images.remove("ubuntu:22.04")
+            error = True
+        if(grep.returncode == 0 and kowalski.returncode == 0):
+            self.wrongAnswer("It's still adding more users!")
+            error = True
+        elif(users.returncode == 0 and kowalski.returncode == 0):
+            self.wrongAnswer("DELETE THOSE USERS")
+            
+            error = True
+        
+        if(error == False):
+            self.correctAnswer(mainMenu)
+					
+class round10(round0):
+    flg = "ZjEyaF9JTl9wMG5k" # --> Change for each class
+    title = "Something Fishy Fish Fish" # --> Change for each class
+    description = "Skipper has asked Kowalski to change passwords for private and rico... again. However, something fishy is happening, like the bad kind of fishy, user passwords are being reset to a default password. \n\nFind a stop to this and set the passwords to \"Moto(Mot0)\" for skipper and private. " 					
+															 					
+	
+    def checkSolution(self, mainMenu):
+        import pexpect
+        userList = ['skipper','private']
+        errorUser = []
+        for user in userList:
+            child = pexpect.spawn(f'docker exec -it {self.name} su - {user} ')
+            child.expect("Password:")
+            child.sendline("Moto(Mot0)")
+            try:
+                child.expect('\$')
+            except:
+                errorUser.append(user)
+                
+        if(not errorUser):
+            self.correctAnswer(mainMenu)
+        elif(errorUser):
+            userErrors = ""
+            for string in errorUser:
+                userErrors += string + " "
+                self.wrongAnswer(f'Incorrect! \nUsers: {userErrors} - password is incorrect')
+
+class round11(round0):
+   
+    flg = "QTFvbmVfSW5fTWFkQGdhc2Nhcg==" # --> Change for each class
+    title = "Skipper's Gift" # --> Change for each class
+    description = "Skipper needs help setting up a service for a special someone. He wants to allow that special someone to SSH into his computer without using a password because passwords are just inconvenient. He also wants to allow this person to login as root. Assist Skipper with setting up a SSH service with public-key authentication on. \n\nPublic key: \n<insert ssh key>." 					
+	
+    def checkSolution(self, mainMenu):
+        print("hello")
