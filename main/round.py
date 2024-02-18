@@ -543,5 +543,74 @@ class round11(round0):
     title = "Skipper's Gift" # --> Change for each class
     description = "Skipper needs help setting up a service for a special someone. He wants to allow that special someone to SSH into his computer without using a password because passwords are just inconvenient. He also wants to allow this person to login as root. Assist Skipper with setting up a SSH service with public-key authentication on. \n\nPublic key: \n<insert ssh key>." 					
 	
+    def createImage(self):
+        client = docker.from_env()
+        client.images.build(path=self.directory, tag=self.name, rm=True)
+        client.containers.run(
+            detach=True,
+            image=self.name,
+            cap_add = "LINUX_IMMUTABLE",
+            ports={'22/tcp':2222},
+            command="sleep infinity",
+            name=self.name,
+            tty=True,
+            stdin_open=True,
+            hostname=self.name
+        )
+    
+    def enterImage(self):
+        super().enterImage()
+        subprocess.run(['docker','exec','-it','-u','root',self.name,'service','ssh','start'],capture_output=True)
+
     def checkSolution(self, mainMenu):
-        print("hello")
+        import paramiko
+        user = 'myguest'
+        host = "127.0.0.1"
+        
+        
+        error = False
+        client = paramiko.SSHClient()
+        client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        key = paramiko.RSAKey.from_private_key_file("/home/dev/.ssh/id_rsa") #Change for workshop
+        try:
+            client.connect(host,username=user,pkey=key,port=2222)
+        except paramiko.ssh_exception.PasswordRequiredException:
+            self.wrongAnswer("You're wrong")
+        _stdin, _stdout,_stderr = client.exec_command("whoami")
+        if("myguest" in _stdout.read().decode()):
+            self.correctAnswer(mainMenu)          
+        client.close()
+        
+class round12(round0):
+   
+    flg = "d2ViX2Rvd25fdzNiX1VQ" # --> Change for each class
+    title = "Rico" # --> Change for each class
+    description = "Skipper has always wanted to build a website from scratch. To begin his journey, Skipper started learning HTML and CSS. After taking a break, Skipper finds out that his website is replaced with Rico's website. Skipper only remembers the name of the file was also named \"index.html\".  Help Skipper fix his website and finish what needs to be done."	 					
+	
+    def createImage(self):
+        client = docker.from_env()
+        client.images.build(path=self.directory, tag=self.name, rm=True)
+        client.containers.run(
+            detach=True,
+            image=self.name,
+            cap_add = "LINUX_IMMUTABLE",
+            ports={'80/tcp':80},
+            command="sleep infinity",
+            name=self.name,
+            tty=True,
+            stdin_open=True,
+            hostname=self.name
+        )
+    
+    def enterImage(self):
+        super().enterImage()
+        
+
+    def checkSolution(self, mainMenu):
+        curl = subprocess.run(['curl','http://localhost:80'],capture_output=True,text=True)
+        
+        if("<h3>Smile and wave boys, smile and wave</h3>" in curl.stdout):
+            self.correctAnswer(mainMenu)
+        else:
+            self.wrongAnswer('This isn\'t the right website\nCheck your files')
+             

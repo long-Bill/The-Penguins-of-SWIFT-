@@ -39,7 +39,7 @@ def dependencies(root):
             ['sudo', 'apt', 'install', 'python-tk','python3-pip','python-dev', '-y'], capture_output=True, text=True)
         d = subprocess.run(['sudo', 'apt-get', 'install', 'docker-ce', 'docker-ce-cli', 'containerd.io', 'docker-buildx-plugin', 'docker-compose-plugin', '-y'],
                                 capture_output=True, text=True)
-        subprocess.run(['sudo','pip','install','docker','pexpect'],capture_output=True)
+        subprocess.run(['sudo','pip','install','docker','pexpect','paramiko'],capture_output=True)
 
         
         roundContainer = subprocess.run(['docker','ps','--filter','name=^round','-aq'],capture_output=True,text=True)
@@ -130,7 +130,7 @@ if (gameStatus):
     #     subprocess.run(['clear'])
 
     # For single round testing **BEGIN***
-    currentRound = round10(10,script_directory)
+    currentRound = round12(12,script_directory)
         
         
     currentRound.createImage()
@@ -138,12 +138,12 @@ if (gameStatus):
     currentRound.startGame()
     if(currentRound.quitGame == True):
         print("hello")
-        #subprocess.run(['clear'])
+        subprocess.run(['clear'])
         #break
     
     if (currentRound.roundStatus == True ):
             roundsCompleted = roundsCompleted + 1
-    #subprocess.run(['clear'])
+    subprocess.run(['clear'])
     #***End***
     endMenu = Tk()
 
