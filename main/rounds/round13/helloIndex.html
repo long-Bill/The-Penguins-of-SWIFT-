@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello, World!</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #222;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .message {
+            font-size: 3em;
+            animation: neon 1.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes neon {
+            from {
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #00c6ff, 0 0 40px #00c6ff, 0 0 50px #00c6ff, 0 0 60px #00c6ff, 0 0 70px #00c6ff;
+            }
+            to {
+                text-shadow: 0 0 20px #fff, 0 0 30px #00c6ff, 0 0 40px #00c6ff, 0 0 50px #00c6ff, 0 0 60px #00c6ff, 0 0 70px #00c6ff, 0 0 80px #00c6ff;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="message">Hello, World!</div>
+    </div>
+</body>
+</html>

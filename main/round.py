@@ -613,4 +613,32 @@ class round12(round0):
             self.correctAnswer(mainMenu)
         else:
             self.wrongAnswer('This isn\'t the right website\nCheck your files')
+
+class round13(round0):
+   
+    flg = "dGhhbmtfeTB1X2MwbXJhZDNz" # --> Change for each class
+    title = "To The Comrades" # --> Change for each class
+    description = "Skipper has been tinkering around and has created several websites. However, whenever Skipper enters localhost or his ip address in the url bar of the browser, it shows the first website Skipper worked on at the beginning. He created 3 websites and all are stored in the directory /var/www/html/. \n\n - First website is called \"FirstWebsite\" \n\n - Second website is called \"HelloWorld\" \n\n - Third website is called \"Comrades\" \n\n Help Skipper make his third website display on localhost and suprise the comrades with his project."	 					
+	
+    def createImage(self):
+        client = docker.from_env()
+        client.images.build(path=self.directory, tag=self.name, rm=True)
+        client.containers.run(
+            detach=True,
+            image=self.name,
+            cap_add = "LINUX_IMMUTABLE",
+            ports={'80/tcp':80},
+            command="sleep infinity",
+            name=self.name,
+            tty=True,
+            stdin_open=True,
+            hostname=self.name
+        )
+    
+    def enterImage(self):
+        super().enterImage()
+        
+
+    def checkSolution(self, mainMenu):
+        print("hello")
              

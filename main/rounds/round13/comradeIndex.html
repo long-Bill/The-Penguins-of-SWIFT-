@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farewell, Comrades - Penguins of Madagascar</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #87CEEB; /* Sky Blue */
+            color: #333;
+        }
+
+        header {
+            background-color: #4682B4; /* Steel Blue */
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.5em;
+            color: #fff;
+        }
+        button {
+            margin: 0;
+            top: 50%;
+            -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .penguins-image {
+            display: block;
+            margin: 0 auto;
+            width: 300px;
+            height: auto;
+        }
+
+        .content {
+            text-align: justify;
+            line-height: 1.6;
+        }
+
+
+        footer {
+            background-color: #4682B4;
+            padding: 10px 0;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        footer p {
+            
+            margin: 0;
+            color: #fff;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Farewell, Comrades - Penguins of Madagascar</h1>
+    </header>
+
+    <div class="container">
+        <img class="penguins-image" src="./smile.jpeg" alt="Penguins of Madagascar">
+        <button onclick="wipePage()">Kaboom</button>
+
+        <script>
+            function wipePage() {
+                document.body.innerHTML = "";
+                var elemDiv = document.createElement('div');
+                elemDiv.style.cssText = 'position:absolute;width:100%;height:100%;z-index:100;background:#87CEEB;';
+                document.body.appendChild(elemDiv);
+
+                var img = document.createElement("img");
+                img.src = "https://media.tenor.com/gRL3bTKJQBkAAAAM/penguin-kaboom.gif";
+                elemDiv.appendChild(img);
+                
+            }
+        </script>
+        <div class="content">
+            <p>In the spirit of adventure and camaraderie, we bid farewell to our beloved comrades, the Penguins of Madagascar. Through countless escapades and daring missions, Skipper, Kowalski, Rico, and Private have charmed audiences with their wit, bravery, and undeniable charm.</p>
+            <p>As they venture into new horizons, let us remember the laughter they brought, the lessons they taught, and the bonds they forged. Though our journey together may come to an end, the memories we've shared will forever remain in our hearts.</p>
+            <p>So here's to the Penguins of Madagascar, always remember...cute and cuddly, cute and cuddly</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Farewell Comrades - Penguins of Madagascar Fan Club</p>
+    </footer>
+</body>
+</html>
