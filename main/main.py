@@ -16,9 +16,7 @@
 
 import subprocess
 import os
-
 import sys
-
 from round import *
 
 def dependencies(root):
@@ -39,8 +37,8 @@ def dependencies(root):
         
         d = subprocess.run(['sudo', 'apt-get', 'install', 'docker-ce', 'docker-ce-cli', 'containerd.io', 'docker-buildx-plugin', 'docker-compose-plugin', '-y'],
                                 capture_output=True, text=True)
-        subprocess.run(['sudo','pip','install','docker','pexpect','paramiko','pillow'],capture_output=True)
-
+        #subprocess.run(['sudo','pip','install','docker','pexpect','paramiko','pillow'],capture_output=True)
+        subprocess.run(['sudo','pip','install','-r','requirements.txt'],capture_output=True)
         
         roundContainer = subprocess.run(['docker','ps','--filter','name=^round','-aq'],capture_output=True,text=True)
         subprocess.run(['xargs','docker','rm','--force'],capture_output=True,text=True, input=roundContainer.stdout)
