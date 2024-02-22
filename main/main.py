@@ -22,14 +22,13 @@ import sys
 gameStatus = True
 script_directory = os.path.dirname(os.path.abspath(sys.argv[0]))
 tkinterPip = subprocess.run(
-            ['sudo', 'apt', 'install','--fix-missing', 'python3-tk','python3-pip','python3-dev', '-y'], capture_output=True, text=True)
-print(tkinterPip.stdout)
-#p = subprocess.run(['sudo','pip','install','-r',f'{script_directory}/requirements.txt','-y'],capture_output=True, text=True)
+            ['sudo', 'apt', 'install', 'python3-tk','python3-pip','python3-dev', '-y'], capture_output=True, text=True)
+
 p = subprocess.run(['sudo','pip','install','docker','pexpect','paramiko','pillow'],capture_output=True)
-print(p.stdout)
+
 d = subprocess.run(['sudo', 'apt-get', 'install', 'docker-ce', 'docker-ce-cli', 'containerd.io', 'docker-buildx-plugin', 'docker-compose-plugin', '-y'],
                                 capture_output=True, text=True)
-print(p.stdout)
+
 from tkinter import *
 import docker
 from PIL import ImageTk, Image

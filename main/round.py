@@ -192,7 +192,7 @@ class round0:
 class round1(round0):
     flg = "QWZyMWNAX2hhc19QZW5ndTFucz8=" # --> Change for each class
     title = "Search and Retrieve" # --> Change for each class
-    description = "Skipper has asked Private to search for a file entitled  \"Route-To-Madagascar\"  hidden somewhere in the system. \n\n-Retrieve the file while keeping its content and place it at Skipper's home directory as a hidden file. \n-Rename the file to \"Skipper_Plan\".\n\nPassword for private is \"private\"" # --> Change for each class
+    description = "Skipper has asked Private to search for a file entitled  \"Route-To-Madagascar.txt\"  hidden somewhere in the system. \n\n-Retrieve the file while keeping its content and place it at Skipper's home directory as a hidden file. \n-Rename the file to \"Skipper_Plan\".\n\nPassword for private is \"private\"" # --> Change for each class
 
     def checkSolution(self,mainMenu):
         fileName = subprocess.run(
