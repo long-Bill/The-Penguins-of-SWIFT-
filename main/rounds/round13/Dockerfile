@@ -28,8 +28,10 @@ RUN mkdir /var/www/Comrades
 COPY comradeIndex.html /var/www/Comrades/index.html
 RUN chown -R www-data:www-data /var/www/Comrades/
 RUN chmod -R 760 /var/www/Comrades/
+COPY smile.jpeg /var/www/Comrades/smile.jpeg
 
 COPY hello.conf /etc/apache2/sites-available/hello.conf
+COPY comrades.conf /etc/apache2/sites-available/Comrades.conf
 
 RUN rm -rf /usr/bin/su
 

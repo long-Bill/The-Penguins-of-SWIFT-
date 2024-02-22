@@ -1,7 +1,7 @@
 FROM ubuntu:22.04
 
 RUN apt-get update -y \
-    && apt-get install nano sudo -y 
+    && apt-get install nano -y 
 
 
 RUN addgroup private

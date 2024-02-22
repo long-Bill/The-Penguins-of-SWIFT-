@@ -1,79 +1,41 @@
-
-
+import docker
 import subprocess
-passwd = subprocess.run(['docker','exec','-it','-u','root',"round7",'grep',"%sudo",'/etc/sudoers'])
-# text = subprocess.run(['cat','/home/dev/test.txt'],capture_output=True,text=True)
-# #print(text.stdout)
-# nameList = ["Alex","Dave","Gloria","Joey","King Julien","Kowalski","Marlene","Marty"
-#             ,"Mason","Maurice","Melman","Mort","Nana","Private","Rico","Skipper"]
-# i = 1
-# for line in text.stdout.split('\n'):
-#     if(str(i) in line and nameList[i-1] in line):
-#         print(f'{nameList[i-1]} matches with order')
-#         i += 1
-#     elif(i <= 16):
-#         print(f'{line} had a missed match')
-#         break
-        
-    
-#         if ((user in line) and (f'/home/{user}' in line) and ("/bin/bash" in line)):
-#             awk = subprocess.run(['awk','-F:','{{print $5}}'],capture_output=True,text=True,input=line)
-#             print(awk.stdout)
-#             if((user in awk.stdout)):
-#                 userFound = True
-#                 print(user)
+from tkinter import *
+from tkinter import messagebox
+from tkinter import scrolledtext
+import base64
+from PIL import ImageTk, Image
+roundsCompleted = 50
+numberOfDirectory = 20
+endMenu = Tk()
+endMenu.title('End of Game')
+w = 550
+h = 500
+ws = endMenu.winfo_screenwidth()
+hs = endMenu.winfo_screenheight()
+
+x = (ws/2) - (w/2)
+y = (hs/2) - (h/2)
+
+endMenu.geometry('%dx%d+%d+%d' % (w, h, x, y))
+endMenu.configure(bg="#303030")
+img = PhotoImage(file="assets/private.png")
+img = img.subsample(6)
+picture = Label(endMenu, image= img,bg="#303030")
+picture.place(relx=0.5, rely=0.25, anchor='center')
+Progress = Label(endMenu, text=f'Completed rounds: {roundsCompleted} / {numberOfDirectory}', font=("Monospace",25),bg="#303030",fg="green")
+Progress.place(relx= 0.5, rely=0.55, anchor='center')
+thank = Label(endMenu, text="Thank you for playing!", font=("Monospace",20),bg="#303030",fg="white")
+thank.place(relx= 0.5, rely=0.65, anchor='center')
+quit = Button(endMenu,
+            text='Quit',
             
-                
-       
-#     if(userFound == False):
-#         errorUser.append(user)
+            height=2, width=10,
+            bg="#ffab40",foreground="white"
+            )
+quit.place(relx=0.5,
+        rely=0.80,
+        anchor='center'
+        )
 
-# if(errorUser):
-#     print("there is something wrong these ppl")
-    
-# else:
-#     for user in userList:
-#         child = pexpect.spawn(f'su - {user} ')
-#         child.expect("Password:")
-#         child.sendline("bruh")
-#         try:
-#             child.expect('\$')
-#         except:
-#             print("Error has occured")
-#         else:
-#             child.sendline('whoami')
-#             child.expect('\$')
-#             print (child.before.decode())
-
-
-
-       
- 
-           
-            
-# #print(errorList)        
-
-    
-#         # else:
-#         #     print(f'{user} was not found')
-#         #     child = pexpect.spawn(f'su - {user}')
-#         #     child.expect("Password:")
-#         #     child.sendline("test")
-#         #     try:
-#         #         child.expect('\$')
-#         #     except:
-#         #         print("Error has occured")
-#         #     else:
-#         #         child.sendline('whoami')
-#         #         child.expect('\$')
-#         #         print (child.before.decode())
-
-
-# # child.expect('Password:', timeout=120)
-# # child.sendline('bruh')
-
-# # child.expect('~$')
-
-# # child.sendline("whoami")
-# # child.expect('~$')
-# # print (child.after)
+endMenu.mainloop() 

@@ -75,16 +75,17 @@ class round0:
         y = (hs/2) - (h/2)
 
         menu.geometry('%dx%d+%d+%d' % (w, h, x, y))
-        title = Label(menu, text=f'{self.title}', font=("Monospace",20))
+        menu.configure(bg="#303030")
+        title = Label(menu, text=f'{self.title}', font=("Monospace",20),bg="#303030",fg="white")
         title.place(relx=0.5,rely=0.05, anchor='center')
-        scenario = Label(menu, text="Scenario", font=("Monospace",13))
+        scenario = Label(menu, text="Scenario", font=("Monospace",13),bg="#303030",fg="white")
         scenario.place(relx=0.05,rely=0.20)
         text = scrolledtext.ScrolledText(menu, width= 55, height= 10,wrap=WORD)
         text.insert(END, self.description)
         text.configure(state ='disabled')      
         text.place(relx=0.05, rely=0.25)
         start = Button(menu, text='Check', 
-               command=lambda: self.checkSolution(menu), height=2, width=10)
+               command=lambda: self.checkSolution(menu), height=2, width=10,bg="#ffab40",foreground="white")
         start.place(relx=0.5, rely=0.70, anchor='center')
         
         
@@ -211,7 +212,7 @@ class round0:
 class round1(round0):
     flg = "QWZyMWNAX2hhc19QZW5ndTFucz8=" # --> Change for each class
     title = "Search and Retrieve" # --> Change for each class
-    description = "Skipper has asked Private to search for a file entitled  \"Route-To-Madagascar\"  hidden somewhere in the system. Retrieve the file while keeping its content and place it at Skipper's home directory as a hidden file. \n  Rename the file to \"Skipper_Plan\"." # --> Change for each class
+    description = "Skipper has asked Private to search for a file entitled  \"Route-To-Madagascar\"  hidden somewhere in the system. \n\n-Retrieve the file while keeping its content and place it at Skipper's home directory as a hidden file. \n-Rename the file to \"Skipper_Plan\".\n\nPassword for private is \"private\"" # --> Change for each class
 
     def checkSolution(self,mainMenu):
         fileName = subprocess.run(
@@ -232,7 +233,7 @@ class round2(round0):
     
     flg = "S0BuZ2Fyb28=" # --> Change for each class
     title = "New Personnel" # --> Change for each class
-    description = "Skipper tasks Private to create an account on the machine for every penguin. Create users for \"kowalski\", \"rico\", and \"private\". Set their passwords to \"$butterb@11\". Create a home directory for each user, set the shell to /bin/bash, and assign them to groups respective to their names."  # --> Change for each class
+    description = "Skipper tasks Private to create an account on the machine for every penguin.\n\n-Create users for \"kowalski\", \"rico\", and \"private\".\n-Set their passwords to \"$butterb@11\".\n-Create a home directory for each user.\n-Set the shell to /bin/bash.\n-Assign them to groups respective to their names.\n\nPassword for Private is \"private\""  # --> Change for each class
 
     def checkSolution(self,mainMenu):
         import pexpect
@@ -285,7 +286,7 @@ class round3(round0):
     
     flg = "bWFuaEB0dGFuIQ==" # --> Change for each class
     title = "Demoted" # --> Change for each class
-    description = "King Julien is angered by Mort's incompetence and demands Private to have his sudo privileges revoked. Remove Mort's sudo privileges."    
+    description = "King Julien is angered by Mort's incompetence and demands Private to have his sudo privileges revoked. Remove Mort's sudo privileges.\n\nPassword for private is \"private\""    
 
     def checkSolution(self,mainMenu):
         sudo = subprocess.run(
@@ -318,7 +319,7 @@ class round5(round0):
     
     flg = "eXVtbXlfcDNhbnV0cw==" # --> Change for each class
     title = "DUPLICATES????" # --> Change for each class
-    description = "Mort is keeping tracking of what everyone is doing around the zoo. He has created a file called zoo.csv that lists the names of all inhabitants in the Central Park Zoo, their species, and what they're doing. However, zoo.csv contains duplicate name entries. King Julien wants this to happen. \n\nName duplicates removed. \n\nThe names to be rearranged in alphabetical order. \n\nOn a number list. \n\nThe file should be named as \"Names_in_the_zoo.txt\" in private's home directory and should only contain names."
+    description = "Mort is keeping tracking of what everyone is doing around the zoo. He has created a file called \"zoo.csv\" that lists the names of all inhabitants in the Central Park Zoo, their species, and what they're doing. However, zoo.csv contains duplicate name entries. King Julien wants this to happen:\n\n-Name duplicates removed.\n-The names to be rearranged in alphabetical order. \n-On a number list. \n-The file should be named as \"Names_in_the_zoo.txt\" in private's home directory and should only contain names.\n\nPassword for private is \"private\""
 
     def checkSolution(self,mainMenu):
         matched = False
@@ -351,7 +352,7 @@ class round5(round0):
 class round6(round0):
     flg = "MG4xeV9yb290X0lT" # --> Change for each class
     title = "Who's Allowed In?" # --> Change for each class
-    description = "Private made several mistakes configuring Skipper and Rico's home directory. Kowalski is responsible for reconfiguring these home directories as well as certain files in each directory. \n\n- Home directories must be owned by the corresponding owner (Skipper owns Skipper's home directory) and have full permissions. \n\n- Members of the central_park group can only view files in the each directory.  \n\n- Other users cannot view the contents of each directories. \n\n- In each directory, the file \"Julien_Spy.txt\" can only be viewed by root."
+    description = "Private made several mistakes configuring Skipper and Rico's home directory. Kowalski is responsible for reconfiguring these home directories as well as certain files in each directory. \n\n-Home directories must be owned by the corresponding owner (Skipper owns Skipper's home directory) and have full permissions. \n\n-Members of the central_park group can only view files in the each directory.\n\n-Other users cannot view the contents of each directory.\n\n-In each directory, the file \"Julien_Spy.txt\" can only be viewed by root.\nPassword for kowalski is \"kowalski\""
 
     def checkSolution(self, mainMenu):
         names = ["rico","skipper"]
@@ -417,7 +418,7 @@ class round6(round0):
 class round7(round0):
     flg = "T25lLXAzcnNvbi1qb2I=" # --> Change for each class
     title = "The Fired Sysadmin" # --> Change for each class
-    description = "Before leaving SWIFT corp., Melmen, the previous system administrator, decided leave a surprise for Kowalski as a goodbye gift. Whenever Kowalski types a command, like ls or cd, it displays a message instead of executing the command. Help Kowalski fix this and get everything back on track.\n\nTIP: use su kowalski to check your commands\nPassword for kowalski: kowalski"				
+    description = "Before leaving SWIFT corp., Melmen, the previous system administrator, decided leave a surprise for Kowalski as a goodbye gift. Whenever Kowalski types a command, like ls or cd, it displays a message instead of executing the command. Help Kowalski fix this and get everything back on track.\n\nTIP: use su kowalski to check your commands\nPassword for kowalski is \"kowalski\""				
 				
     def checkSolution(self, mainMenu):
         user = "kowalski"
@@ -441,7 +442,7 @@ class round7(round0):
 class round8(round0):
     flg = "cXUxY2tfYW5hbHlzMTI=" # --> Change for each class
     title = "Sudoers" # --> Change for each class
-    description = "Kowalski is assigned to add more users with admin privileges. However, when using the sudo command, users are not required to enter their password. Find a way to enforce a password entry when using sudo. The users to add to the sudo group are \"king_julien\" and \"mort\". \nPassword for private is: private"					
+    description = "Kowalski is assigned to add more users with admin privileges. However, when using the sudo command, users are not required to enter their password. Find a way to enforce a password entry when using sudo. The users to add to the sudo group are \"king_julien\" and \"mort\". \nPassword for kowalski is \"kowalski\"\nPassword for mort is \"mort\"\nPassword for king_julien is \"king_julien\""					
 	
     
     def checkSolution(self, mainMenu):
@@ -470,7 +471,7 @@ class round9(round0):
     
     flg = "WTMyX3JpYzAta2FiMDBt" # --> Change for each class
     title = "For the Professionals" # --> Change for each class
-    description = "SECURITY ALERT!! Something is casuing the system to add more admin users and allowing system-destroying commands to be executed. Help Kowalski stop this and delete any users created from the cause."					
+    description = "SECURITY ALERT!! Something is causing the system to add more admin users and allowing system-breaking commands to be executed. Help Kowalski stop this and delete any users created from the cause.\n\nPassword for kowalski is \"kowalski\""					
 	
     def enterImage(self):
         import time
@@ -513,7 +514,7 @@ class round9(round0):
 class round10(round0):
     flg = "ZjEyaF9JTl9wMG5k" # --> Change for each class
     title = "Something Fishy Fish Fish" # --> Change for each class
-    description = "Skipper has asked Kowalski to change passwords for private and rico... again. However, something fishy is happening, like the bad kind of fishy, user passwords are being reset to a default password. \n\nFind a stop to this and set the passwords to \"Moto(Mot0)\" for skipper and private. " 					
+    description = "Skipper has asked Kowalski to change passwords for private and rico... again. However, something fishy is happening, like the bad kind of fishy, user passwords are being reset to a default password. \n\nFind a stop to this and set the passwords to \"Moto(Mot0)\" for skipper and private.\n\nPassword for kowalski is \"kowalski\" " 					
 															 					
 	
     def checkSolution(self, mainMenu):
@@ -541,7 +542,7 @@ class round11(round0):
    
     flg = "QTFvbmVfSW5fTWFkQGdhc2Nhcg==" # --> Change for each class
     title = "Skipper's Gift" # --> Change for each class
-    description = "Skipper needs help setting up a service for a special someone. He wants to allow that special someone to SSH into his computer without using a password because passwords are just inconvenient. He also wants to allow this person to login as root. Assist Skipper with setting up a SSH service with public-key authentication on. \n\nPublic key: \n<insert ssh key>." 					
+    description = "Skipper needs help setting up a service for a special someone. He wants to allow that special someone to SSH into his computer without using a password because passwords are just inconvenient. He also wants to allow this person to login as myguest. Assist Skipper with setting up a SSH service with public-key authentication on.\nPassword for skipper is \"skipper\"\nPassword for myguest is \"myguest\"\n\nPublic key: \n<insert ssh key>." 					
 	
     def createImage(self):
         client = docker.from_env()
@@ -585,7 +586,7 @@ class round12(round0):
    
     flg = "d2ViX2Rvd25fdzNiX1VQ" # --> Change for each class
     title = "Rico" # --> Change for each class
-    description = "Skipper has always wanted to build a website from scratch. To begin his journey, Skipper started learning HTML and CSS. After taking a break, Skipper finds out that his website is replaced with Rico's website. Skipper only remembers the name of the file was also named \"index.html\".  Help Skipper fix his website and finish what needs to be done."	 					
+    description = "Skipper has always wanted to build a website from scratch. To begin his journey, Skipper started learning HTML and CSS. After taking a break, Skipper finds out that his website is replaced with Rico's website. Skipper only remembers the name of the file was named \"index.html\". Help Skipper fix his website and finish what needs to be done.\n\nPassword for skipper is \"skipper\""	 					
 	
     def createImage(self):
         client = docker.from_env()
@@ -618,7 +619,7 @@ class round13(round0):
    
     flg = "dGhhbmtfeTB1X2MwbXJhZDNz" # --> Change for each class
     title = "To The Comrades" # --> Change for each class
-    description = "Skipper has been tinkering around and has created several websites. However, whenever Skipper enters localhost or his ip address in the url bar of the browser, it shows the first website Skipper worked on at the beginning. He created 3 websites and all are stored in the directory /var/www/html/. \n\n - First website is called \"FirstWebsite\" \n\n - Second website is called \"HelloWorld\" \n\n - Third website is called \"Comrades\" \n\n Help Skipper make his third website display on localhost and suprise the comrades with his project."	 					
+    description = "Skipper has been tinkering around and has created several websites. However, whenever Skipper enters localhost or his ip address in the url bar of the browser, it shows the first website Skipper worked on at the beginning. He created 3 websites and all are stored in the directory /var/www/html/. \n\n - First website is in /var/www/html \n\n - Second website is called \"HelloWorld\" \n\n - Third website is called \"Comrades\" \n\n Help Skipper make his third website display on localhost and suprise the comrades with his project.\Password for skipper is \"skipper\""	 					
 	
     def createImage(self):
         client = docker.from_env()
@@ -640,5 +641,10 @@ class round13(round0):
         
 
     def checkSolution(self, mainMenu):
-        print("hello")
+        curl = subprocess.run(['curl','http://localhost:80'],capture_output=True,text=True)
+        
+        if("cute and cuddly, cute and cuddly" in curl.stdout and "<h1>Farewell, Comrades" in curl.stdout):
+            self.correctAnswer(mainMenu)
+        else:
+            self.wrongAnswer('This isn\'t the right website\nCheck configuration files')
              

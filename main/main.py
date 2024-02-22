@@ -18,6 +18,7 @@ import subprocess
 import os
 import re
 import sys
+from PIL import ImageTk, Image
 from round import *
 
 def dependencies(root):
@@ -39,7 +40,7 @@ def dependencies(root):
             ['sudo', 'apt', 'install', 'python-tk','python3-pip','python-dev', '-y'], capture_output=True, text=True)
         d = subprocess.run(['sudo', 'apt-get', 'install', 'docker-ce', 'docker-ce-cli', 'containerd.io', 'docker-buildx-plugin', 'docker-compose-plugin', '-y'],
                                 capture_output=True, text=True)
-        subprocess.run(['sudo','pip','install','docker','pexpect','paramiko'],capture_output=True)
+        subprocess.run(['sudo','pip','install','docker','pexpect','paramiko','pillow'],capture_output=True)
 
         
         roundContainer = subprocess.run(['docker','ps','--filter','name=^round','-aq'],capture_output=True,text=True)
@@ -77,8 +78,13 @@ menu = Tk()
 menu.protocol("WM_DELETE_WINDOW" , closing_menu)
 
 menu.title('The Penguins of SWIFT')
-w = 500
-h = 500
+
+img = PhotoImage(file="./assets/penguinStart.png")
+img = img.subsample(5)
+
+menu.config(background="#303030")
+w = 600
+h = 600
 ws = menu.winfo_screenwidth()
 hs = menu.winfo_screenheight()
 
@@ -86,18 +92,21 @@ x = (ws/2) - (w/2)
 y = (hs/2) - (h/2)
 
 menu.geometry('%dx%d+%d+%d' % (w, h, x, y))
-
+title = Label(menu, text="The Penguins Of SWIFT", font=("Monospace",25),bg="#303030",fg="white")
+picture = Label(menu, image= img,bg="#303030")
+title.place(relx=0.5, rely=0.55, anchor='center')
+picture.place(relx=0.5, rely=0.25, anchor='center')
 start = Button(menu, text='Start!',
-               command=lambda: dependencies(menu), height=2, width=10)
-start.place(relx=0.5, rely=0.55, anchor='center')
+               command=lambda: dependencies(menu), height=2, width=10,bg="#ffab40",foreground="white")
+start.place(relx=0.30, rely=0.75, anchor='center')
 
 quit = Button(menu,
               text='Quit',
               command=lambda: quitGame(menu),
-              height=2, width=10
+              height=2, width=10,bg="#ffab40",foreground="white"
               )
-quit.place(relx=0.5,
-           rely=0.70,
+quit.place(relx=0.70,
+           rely=0.75,
            anchor='center'
            )
 
@@ -112,44 +121,43 @@ if (gameStatus):
 
     roundsCompleted = 0
     #Actual GAME
-    # for rIndex in range(0,numberOfDirectory):
-    #     subprocess.run(['echo','Creating Image, please wait.'])
-    #     roundClass = globals()[f'round{rIndex}']
-    #     currentRound  = roundClass(rIndex,script_directory)
+    for rIndex in range(0,numberOfDirectory):
+        subprocess.run(['echo','Creating Image, please wait.'])
+        roundClass = globals()[f'round{rIndex}']
+        currentRound  = roundClass(rIndex,script_directory)
         
         
-    #     currentRound.createImage()
-    #     subprocess.run(['clear'])
-    #     currentRound.startGame()
-    #     if(currentRound.quitGame == True):
-    #         subprocess.run(['clear'])
-    #         break
+        currentRound.createImage()
+        subprocess.run(['clear'])
+        currentRound.startGame()
+        if(currentRound.quitGame == True):
+            subprocess.run(['clear'])
+            break
 
-    #     if (currentRound.roundStatus == True):
-    #          roundsCompleted = roundsCompleted + 1
-    #     subprocess.run(['clear'])
+        if (currentRound.roundStatus == True):
+             roundsCompleted = roundsCompleted + 1
+        subprocess.run(['clear'])
 
     # For single round testing **BEGIN***
-    currentRound = round13(13,script_directory)
+    # currentRound = round5(5,script_directory)
         
         
-    currentRound.createImage()
-    subprocess.run(['clear'])
-    currentRound.startGame()
-    if(currentRound.quitGame == True):
-        print("hello")
-        subprocess.run(['clear'])
-        #break
+    # currentRound.createImage()
+    # subprocess.run(['clear'])
+    # currentRound.startGame()
+    # if(currentRound.quitGame == True):
+    #     print("hello")
+    #     subprocess.run(['clear'])
+    #     #break
     
-    if (currentRound.roundStatus == True ):
-            roundsCompleted = roundsCompleted + 1
-    subprocess.run(['clear'])
+    # if (currentRound.roundStatus == True ):
+    #         roundsCompleted = roundsCompleted + 1
+    # subprocess.run(['clear'])
     #***End***
     endMenu = Tk()
-
-    endMenu.title('End of Game')
-    w = 500
-    h = 250
+    endMenu.title('Thank you!')
+    w = 550
+    h = 500
     ws = endMenu.winfo_screenwidth()
     hs = endMenu.winfo_screenheight()
 
@@ -157,16 +165,23 @@ if (gameStatus):
     y = (hs/2) - (h/2)
 
     endMenu.geometry('%dx%d+%d+%d' % (w, h, x, y))
-
-    Progress = Label(endMenu, text=f'Completed rounds: {roundsCompleted} / {numberOfDirectory}', font=("Monospace",25))
-    Progress.place(relx= 0.5, rely=0.3, anchor='center')
+    endMenu.configure(bg="#303030")
+    img = PhotoImage(file="assets/private.png")
+    img = img.subsample(6)
+    picture = Label(endMenu, image= img,bg="#303030")
+    picture.place(relx=0.5, rely=0.25, anchor='center')
+    Progress = Label(endMenu, text=f'Completed rounds: {roundsCompleted} / {numberOfDirectory}', font=("Monospace",25),bg="#303030",fg="green")
+    Progress.place(relx= 0.5, rely=0.55, anchor='center')
+    thank = Label(endMenu, text="Thank you for playing!", font=("Monospace",20),bg="#303030",fg="white")
+    thank.place(relx= 0.5, rely=0.65, anchor='center')
     quit = Button(endMenu,
-                text='Quit',
-                command=lambda: quitGame(endMenu),
-                height=2, width=10
-                )
+            text='Quit',
+            command=lambda: quitGame(endMenu),
+            height=2, width=10,
+            bg="#ffab40",foreground="white"
+            )
     quit.place(relx=0.5,
-            rely=0.70,
+            rely=0.80,
             anchor='center'
             )
 
