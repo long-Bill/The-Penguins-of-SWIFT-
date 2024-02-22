@@ -542,7 +542,7 @@ class round11(round0):
     def enterImage(self):
         super().enterImage()
         subprocess.run(['docker','exec','-it','-u','root',self.name,'service','ssh','start'],capture_output=True)
-
+        subprocess.run(['docker','exec','-it','-u','root',self.name,'service','ssh','restart'],capture_output=True)
     def checkSolution(self, mainMenu):
         import paramiko
         user = 'myguest'
