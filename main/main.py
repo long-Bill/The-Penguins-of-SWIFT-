@@ -21,9 +21,12 @@ import sys
 ############### Main ###########################
 gameStatus = True
 tkinterPip = subprocess.run(
-            ['sudo', 'apt', 'install', 'python-tk','python3-pip','python-dev', '-y'], capture_output=True, text=True)
-subprocess.run(['sudo','pip','install','-r','requirements.txt'],capture_output=True)
+            ['sudo', 'apt', 'install', 'python3-tk','python3-pip','python3-dev', '-y'], capture_output=True, text=True)
+print(tkinterPip.stdout)
+p = subprocess.run(['sudo','pip','install','-r','requirements.txt','-y'],capture_output=True, text=True)
+print(p.stdout)
 from tkinter import *
+import docker
 from PIL import ImageTk, Image
 def dependencies(root):
     print("********Installing dependencies*********")

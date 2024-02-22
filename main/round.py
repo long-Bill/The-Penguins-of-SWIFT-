@@ -1,24 +1,4 @@
-'''
-    round class:
-    variables: 
-        round id
-        round name
-        round directory
-        round flag
-        round scenario description
 
-    constructors:
-        
-    
-    methods: 
-        startRound()
-        check()
-        showDescription()
-        showFlagGUI()
-
-
-
-'''
 import docker
 import subprocess
 from tkinter import *
