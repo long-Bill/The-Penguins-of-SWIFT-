@@ -522,7 +522,7 @@ class round11(round0):
    
     flg = "QTFvbmVfSW5fTWFkQGdhc2Nhcg==" # --> Change for each class
     title = "Skipper's Gift" # --> Change for each class
-    description = "Skipper needs help setting up a service for a special someone. He wants to allow that special someone to SSH into his computer without using a password because passwords are just inconvenient. He also wants to allow this person to login as myguest. Assist Skipper with setting up a SSH service with public-key authentication on.\nNote: If you want to test ssh on host, it will be on port 2222\nPassword for skipper is \"skipper\"\nPassword for myguest is \"myguest\"\n\nPublic key: \nssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC9HEtB/e+yceIVXYjXQ/DLwV600DDaz/43MDTXs5Tv+oWhHEisP2i4xdSkQE/4LSwwWOE3d04FHlIJP9B0XsPz6QIqYK1M9MUj7ovsv1TMASbUsAhdWw5GLvwYpcyW9Zsnh9MMFGOMpYqgzjUroXCEh2oJBLDj+rQivqrBKdymsvDBIR7OZKIsGISJJymnsSxgKKYfIb0vqug8Farh/RS9aYm4QYcs40LjysGfHutwFbJAex1LwvFTUb7eccxCB2mt5cz6a63545G2s/vYYgyFZ7I7oodR1FDBmu3S25v8F7vrXVADUhHUdfQsHAOx1dboFcykF0je8VN0AS1Eo2nZLkiW7axnOV3IvU7wEAH6lXOkwNPgoXvogrODbOfrJJfM/W/SXghQ+kk77rliOPhziWg8fodDGknY0RDou7xMocKvlAnmJlXIiOX00fPTTO0fEPxorRKvL3jrqpnl3Q4aH2Lr4WGnewI0mQuD0Ya0njjWaO/dSFliP39wzcdb6X0= hula@debian11" 					
+    description = "Skipper needs help setting up a service for a special someone. He wants to allow that special someone to SSH into his computer without using a password because passwords are just inconvenient. He also wants to allow this person to login as myguest. Assist Skipper with setting up a SSH service with public-key authentication on.\nNote: If you want to test ssh on host, it will be on port 2222\nPassword for skipper is \"skipper\"\nPassword for myguest is \"myguest\"\n\nPublic key: \nssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCrtW+hpjl0aUmadkY5hYssHO+lf3AbligO9JUKQaT8U1r+sgTqkBTSEaD0ASugUhIUbWzXqnzFiSUF0hnFvd723U3meRMFkBVdpx9DDF1yz5+RiDM1EY+fETkyKdS9PDU0EbiwTMI7sTj/tQRBDh5GxvxMXPEAa/u3Mav5PDzBMzcgE9mAlMGFd2Z6nCPsgNtZseHFuX5UZukBLBMhJEnG+qUWuuWJGFbYNWw/OtyQqmXhl2I4L5byPHb+cGwyBclooLyNHPN/km1kWzksHZwwB8d0zJ9G4HIcjZudtdQP8513w3YfKuj99pLOJTLWmRM/wi/RvFpD1Irz6jmAFVnmKFaLy0Qml+Ja1/h4QHd6MKoCd9BdvGvXjhRi9W7xKzgfh4rCR6bNxRzJ/Xf9eEPWFkgSfYnDNYJLy+mGhti2rlGHgJkivirJ/AFuGcU6Ei1S7deasekYzEFEdluvKexDZhPXusrkTNeDpszAYHY42qGQBzmzJLLwJVoX1+jx7Wk= player@debian11" 					
 	
     def createImage(self):
         client = docker.from_env()
@@ -552,7 +552,7 @@ class round11(round0):
         error = False
         client = paramiko.SSHClient()
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        key = paramiko.RSAKey.from_private_key_file("/home/hula/.ssh/id_rsa") #Change for workshop
+        key = paramiko.RSAKey.from_private_key_file("/home/player/.ssh/id_rsa") #Change for workshop
         try:
             client.connect(host,username=user,pkey=key,port=2222)
         except paramiko.ssh_exception.PasswordRequiredException:
@@ -560,6 +560,7 @@ class round11(round0):
         except paramiko.ssh_exception.AuthenticationException:
             self.wrongAnswer("Check your sshd configuration file")
         _stdin, _stdout,_stderr = client.exec_command("whoami")
+        print(_stdout.read().decode())
         if("myguest" in _stdout.read().decode()):
             self.correctAnswer(mainMenu)          
         client.close()
