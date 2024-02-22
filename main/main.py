@@ -81,7 +81,7 @@ menu.protocol("WM_DELETE_WINDOW" , closing_menu)
 
 menu.title('The Penguins of SWIFT')
 
-img = PhotoImage(file="./assets/penguinStart.png")
+img = PhotoImage(file="assets/penguinStart.png")
 img = img.subsample(5)
 
 menu.config(background="#303030")
