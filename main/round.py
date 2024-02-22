@@ -213,7 +213,7 @@ class round2(round0):
     
     flg = "S0BuZ2Fyb28=" # --> Change for each class
     title = "New Personnel" # --> Change for each class
-    description = "Skipper tasks Private to create an account on the machine for every penguin.\n\n-Create users for \"kowalski\", \"rico\", and \"private\".\n-Set their passwords to \"$butterb@11\".\n-Create a home directory for each user.\n-Set the shell to /bin/bash.\n-Assign them to groups respective to their names.\n\nPassword for Private is \"private\""  # --> Change for each class
+    description = "Skipper tasks Private to create an account on the machine for every penguin.\n\n-Create users for \"kowalski\", \"rico\", and \"skipper\".\n-Set their passwords to \"$butterb@11\".\n-Create a home directory for each user.\n-Set the shell to /bin/bash.\n-Assign them to groups respective to their names.\n\nPassword for Private is \"private\""  # --> Change for each class
 
     def checkSolution(self,mainMenu):
         import pexpect
@@ -570,7 +570,7 @@ class round12(round0):
    
     flg = "d2ViX2Rvd25fdzNiX1VQ" # --> Change for each class
     title = "Rico" # --> Change for each class
-    description = "Skipper has always wanted to build a website from scratch. To begin his journey, Skipper started learning HTML and CSS. After taking a break, Skipper finds out that his website is replaced with Rico's website. Skipper only remembers the name of the file was named \"index.html\". Help Skipper fix his website and finish what needs to be done.\n\nPassword for skipper is \"skipper\""	 					
+    description = "Skipper has always wanted to build a website from scratch. To begin his journey, Skipper started learning HTML and CSS. After taking a break, Skipper finds out that his website is replaced with Rico's website. Skipper only remembers the name of the file was named \"index.html\". Help Skipper fix his website and finish what needs to be done.\n\nAccess website at http://localhost:80\n\nPassword for skipper is \"skipper\""	 					
 	
     def createImage(self):
         client = docker.from_env()
@@ -603,7 +603,7 @@ class round13(round0):
    
     flg = "dGhhbmtfeTB1X2MwbXJhZDNz" # --> Change for each class
     title = "To The Comrades" # --> Change for each class
-    description = "Skipper has been tinkering around and has created several websites. However, whenever Skipper enters localhost or his ip address in the url bar of the browser, it shows the first website Skipper worked on at the beginning. He created 3 websites and all are stored in the directory /var/www/html/. \n\n - First website is in /var/www/html \n\n - Second website is called \"HelloWorld\" \n\n - Third website is called \"Comrades\" \n\n Help Skipper make his third website display on localhost and suprise the comrades with his project.\Password for skipper is \"skipper\""	 					
+    description = "Skipper has been tinkering around and has created several websites. However, whenever Skipper enters localhost or his ip address in the url bar of the browser, it shows the first website Skipper worked on at the beginning. He created 3 websites and all are stored in the directory /var/www/html/. \n\n - First website is in /var/www/html \n\n - Second website is called \"HelloWorld\" \n\n - Third website is called \"Comrades\" \n\n Help Skipper make his third website display on localhost and suprise the comrades with his project.\n\nAccess website at http://localhost:80\nPassword for skipper is \"skipper\""	 					
 	
     def createImage(self):
         client = docker.from_env()

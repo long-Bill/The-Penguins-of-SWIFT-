@@ -1,7 +1,7 @@
 FROM ubuntu:22.04
 
 RUN apt-get update -y \
-    && apt-get install vim sudo apache2 -y 
+    && apt-get install nano sudo apache2 -y 
 
 USER root
 
