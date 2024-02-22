@@ -13,12 +13,12 @@
    https://stackoverflow.com/questions/34051747/get-environment-variable-from-docker-container 
 '''
 
-from tkinter import *
+
 import subprocess
 import os
-import re
+
 import sys
-from PIL import ImageTk, Image
+
 from round import *
 
 def dependencies(root):
@@ -64,7 +64,8 @@ def dependencies(root):
 gameStatus = True
 tkinterPip = subprocess.run(
             ['sudo', 'apt', 'install', 'python-tk','python3-pip','python-dev', '-y'], capture_output=True, text=True)
-
+from tkinter import *
+from PIL import ImageTk, Image
 def quitGame(gui):
     gui.destroy()
     sys.exit()
