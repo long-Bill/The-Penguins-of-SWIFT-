@@ -36,8 +36,7 @@ def dependencies(root):
         root.destroy()
 
     else:
-        tkinterPip = subprocess.run(
-            ['sudo', 'apt', 'install', 'python-tk','python3-pip','python-dev', '-y'], capture_output=True, text=True)
+        
         d = subprocess.run(['sudo', 'apt-get', 'install', 'docker-ce', 'docker-ce-cli', 'containerd.io', 'docker-buildx-plugin', 'docker-compose-plugin', '-y'],
                                 capture_output=True, text=True)
         subprocess.run(['sudo','pip','install','docker','pexpect','paramiko','pillow'],capture_output=True)
@@ -63,7 +62,8 @@ def dependencies(root):
 
 ############### Main ###########################
 gameStatus = True
-
+tkinterPip = subprocess.run(
+            ['sudo', 'apt', 'install', 'python-tk','python3-pip','python-dev', '-y'], capture_output=True, text=True)
 
 def quitGame(gui):
     gui.destroy()
