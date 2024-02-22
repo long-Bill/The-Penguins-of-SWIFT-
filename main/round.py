@@ -562,7 +562,6 @@ class round11(round0):
         except paramiko.ssh_exception.SSHException:
             self.wrongAnswer("SSH is not open")
         _stdin, _stdout,_stderr = client.exec_command("whoami")
-        print(_stdout.read().decode())
         if("myguest" in _stdout.read().decode()):
             self.correctAnswer(mainMenu)          
         client.close()
