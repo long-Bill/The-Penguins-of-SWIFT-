@@ -181,7 +181,7 @@ class round0:
         bin = base64.b64decode(self.flg)
         text = Text(frame, font=("Monospace",15),bg="light green",width=25, height= 5, borderwidth=0, highlightthickness = 0, wrap=WORD)
         
-        text.insert(END, "Correct! Here is your flag:\n" f"{{{bin.decode('utf-8')}}}")
+        text.insert(END, "Correct! Here is your flag:\n" f"pen{{{bin.decode('utf-8')}}}")
         text.pack(side= RIGHT)
         text.configure(state ='disabled')
         next = Button(root,
