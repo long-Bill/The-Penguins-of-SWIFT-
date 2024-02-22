@@ -81,7 +81,7 @@ menu.protocol("WM_DELETE_WINDOW" , closing_menu)
 
 menu.title('The Penguins of SWIFT')
 
-img = PhotoImage(file="assets/penguinStart.png")
+img = PhotoImage(file="/opt/game/assets/penguinStart.png")
 img = img.subsample(5)
 
 menu.config(background="#303030")
@@ -168,7 +168,7 @@ if (gameStatus):
 
     endMenu.geometry('%dx%d+%d+%d' % (w, h, x, y))
     endMenu.configure(bg="#303030")
-    img = PhotoImage(file="assets/private.png")
+    img = PhotoImage(file="/opt/game/assets/private.png")
     img = img.subsample(6)
     picture = Label(endMenu, image= img,bg="#303030")
     picture.place(relx=0.5, rely=0.25, anchor='center')
