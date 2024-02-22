@@ -18,7 +18,13 @@ import subprocess
 import os
 import sys
 
-
+############### Main ###########################
+gameStatus = True
+tkinterPip = subprocess.run(
+            ['sudo', 'apt', 'install', 'python-tk','python3-pip','python-dev', '-y'], capture_output=True, text=True)
+subprocess.run(['sudo','pip','install','-r','requirements.txt'],capture_output=True)
+from tkinter import *
+from PIL import ImageTk, Image
 def dependencies(root):
     print("********Installing dependencies*********")
     update = subprocess.run(
@@ -55,17 +61,6 @@ def dependencies(root):
                 
         root.destroy()
         subprocess.run(['clear'])
-        
-
-
-############### Main ###########################
-gameStatus = True
-tkinterPip = subprocess.run(
-            ['sudo', 'apt', 'install', 'python-tk','python3-pip','python-dev', '-y'], capture_output=True, text=True)
-subprocess.run(['sudo','pip','install','-r','requirements.txt'],capture_output=True)
-from tkinter import *
-from PIL import ImageTk, Image
-
 def quitGame(gui):
     gui.destroy()
     sys.exit()
