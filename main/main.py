@@ -17,7 +17,7 @@
 import subprocess
 import os
 import sys
-from round import *
+
 
 def dependencies(root):
     print("********Installing dependencies*********")
@@ -64,6 +64,7 @@ tkinterPip = subprocess.run(
             ['sudo', 'apt', 'install', 'python-tk','python3-pip','python-dev', '-y'], capture_output=True, text=True)
 from tkinter import *
 from PIL import ImageTk, Image
+
 def quitGame(gui):
     gui.destroy()
     sys.exit()
@@ -110,7 +111,7 @@ quit.place(relx=0.70,
            )
 
 menu.mainloop()
-
+from round import *
 
 if (gameStatus):
     script_directory = os.path.dirname(os.path.abspath(sys.argv[0]))
