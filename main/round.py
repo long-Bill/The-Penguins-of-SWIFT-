@@ -522,7 +522,7 @@ class round11(round0):
    
     flg = "QTFvbmVfSW5fTWFkQGdhc2Nhcg==" # --> Change for each class
     title = "Skipper's Gift" # --> Change for each class
-    description = "Skipper needs help setting up a service for a special someone. He wants to allow that special someone to SSH into his computer without using a password because passwords are just inconvenient. He also wants to allow this person to login as myguest. Assist Skipper with setting up a SSH service with public-key authentication on.\nPassword for skipper is \"skipper\"\nPassword for myguest is \"myguest\"\n\nPublic key: \n<insert ssh key>." 					
+    description = "Skipper needs help setting up a service for a special someone. He wants to allow that special someone to SSH into his computer without using a password because passwords are just inconvenient. He also wants to allow this person to login as myguest. Assist Skipper with setting up a SSH service with public-key authentication on.\nNote: If you want to test ssh on host, it will be on port 2222\nPassword for skipper is \"skipper\"\nPassword for myguest is \"myguest\"\n\nPublic key: \nssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDPzbCtjFzqqn//EHD2G2j8yuDn8TGNpJ6CNlrQ035svwEe66A8xXPWcQONYbD+rTIgM6tfcUk1CKtieFicDE5c96QOLQ9N8d1o11XSBD3TtOZlc6V7BahlvkqfeEoV1LW+pmPrT/c57ctxNYl5yjUPGyGS61DbZJc8cYZVAyAi1Xr4PgwXL9qYcaCBp4OG2XoyoxwVbl7cGvPKg4iFFOh4LNeZLIkIaSiUIBgZhkScF4I4zuDYtC1kcDsqe8utOK9y42AwTqvtysv3LjMFB+yKPXJd0OYzOp9yleivG+hhHPtnPLuyYalVWC46Q4/5qn3M8PJlv+6kDr17ol7jKQaq/XeaHcPUMVABUEzQo+RpSu7KoWO7Me/67H1uEbgymx8g6Ui/ZJnipr7zvrOT8bjhGOulTK48BDpXleMCqDQ8RaZcm6Q//UJCzvr38UFs0sY/9CFdxFPVn+QnneeTsl2K4EaID0R9Dhxe4ybVXCwt3pA5JjWs1wKDioT8Y2DoTKk= hula@debian11." 					
 	
     def createImage(self):
         client = docker.from_env()
@@ -552,7 +552,7 @@ class round11(round0):
         error = False
         client = paramiko.SSHClient()
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        key = paramiko.RSAKey.from_private_key_file("/home/dev/.ssh/id_rsa") #Change for workshop
+        key = paramiko.RSAKey.from_private_key_file("/home/hula/.ssh/id_rsa") #Change for workshop
         try:
             client.connect(host,username=user,pkey=key,port=2222)
         except paramiko.ssh_exception.PasswordRequiredException:

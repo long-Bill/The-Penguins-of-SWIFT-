@@ -123,38 +123,38 @@ if (gameStatus):
 
     roundsCompleted = 0
     #Actual GAME
-    for rIndex in range(0,numberOfDirectory):
-        subprocess.run(['echo','Creating Image, please wait.'])
-        roundClass = globals()[f'round{rIndex}']
-        currentRound  = roundClass(rIndex,script_directory)
+    # for rIndex in range(0,numberOfDirectory):
+    #     subprocess.run(['echo','Creating Image, please wait.'])
+    #     roundClass = globals()[f'round{rIndex}']
+    #     currentRound  = roundClass(rIndex,script_directory)
         
         
-        currentRound.createImage()
-        subprocess.run(['clear'])
-        currentRound.startGame()
-        if(currentRound.quitGame == True):
-            subprocess.run(['clear'])
-            break
+    #     currentRound.createImage()
+    #     subprocess.run(['clear'])
+    #     currentRound.startGame()
+    #     if(currentRound.quitGame == True):
+    #         subprocess.run(['clear'])
+    #         break
 
-        if (currentRound.roundStatus == True):
-             roundsCompleted = roundsCompleted + 1
-        subprocess.run(['clear'])
+    #     if (currentRound.roundStatus == True):
+    #          roundsCompleted = roundsCompleted + 1
+    #     subprocess.run(['clear'])
 
     # For single round testing **BEGIN***
-    # currentRound = round5(5,script_directory)
+    currentRound = round11(11,script_directory)
         
         
-    # currentRound.createImage()
-    # subprocess.run(['clear'])
-    # currentRound.startGame()
-    # if(currentRound.quitGame == True):
-    #     print("hello")
-    #     subprocess.run(['clear'])
-    #     #break
+    currentRound.createImage()
+    subprocess.run(['clear'])
+    currentRound.startGame()
+    if(currentRound.quitGame == True):
+        print("hello")
+        subprocess.run(['clear'])
+        #break
     
-    # if (currentRound.roundStatus == True ):
-    #         roundsCompleted = roundsCompleted + 1
-    # subprocess.run(['clear'])
+    if (currentRound.roundStatus == True ):
+            roundsCompleted = roundsCompleted + 1
+    subprocess.run(['clear'])
     #***End***
     endMenu = Tk()
     endMenu.title('Thank you!')
