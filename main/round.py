@@ -559,6 +559,8 @@ class round11(round0):
             self.wrongAnswer("It is requiring a password.\nMust be public key.")
         except paramiko.ssh_exception.AuthenticationException:
             self.wrongAnswer("Check your sshd configuration file")
+        except paramiko.ssh_exception.SSHException:
+            self.wrongAnswer("SSH is not open")
         _stdin, _stdout,_stderr = client.exec_command("whoami")
         print(_stdout.read().decode())
         if("myguest" in _stdout.read().decode()):

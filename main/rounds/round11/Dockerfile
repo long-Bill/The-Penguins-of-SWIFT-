@@ -18,6 +18,7 @@ RUN echo "skipper:skipper" | chpasswd
 RUN useradd -m -d /home/myguest -s /bin/bash -g myguest -u 1002 myguest
 RUN usermod -a -G penguins myguest
 RUN echo "myguest:myguest" | chpasswd
+RUN sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/g' /etc/ssh/sshd_config
 
 RUN echo "alias exit='echo \"NONE SHALL LEAVE, OR ELSE\"'" >> /etc/bash.bashrc
 
