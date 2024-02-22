@@ -20,10 +20,11 @@ import sys
 
 ############### Main ###########################
 gameStatus = True
+script_directory = os.path.dirname(os.path.abspath(sys.argv[0]))
 tkinterPip = subprocess.run(
             ['sudo', 'apt', 'install', 'python3-tk','python3-pip','python3-dev', '-y'], capture_output=True, text=True)
 print(tkinterPip.stdout)
-p = subprocess.run(['sudo','pip','install','-r','requirements.txt','-y'],capture_output=True, text=True)
+p = subprocess.run(['sudo','pip','install','-r',f'{script_directory}/requirements.txt','-y'],capture_output=True, text=True)
 d = subprocess.run(['sudo', 'apt-get', 'install', 'docker-ce', 'docker-ce-cli', 'containerd.io', 'docker-buildx-plugin', 'docker-compose-plugin', '-y'],
                                 capture_output=True, text=True)
 print(p.stdout)
@@ -114,7 +115,7 @@ menu.mainloop()
 from round import *
 
 if (gameStatus):
-    script_directory = os.path.dirname(os.path.abspath(sys.argv[0]))
+    
     roundDirectory = f'{script_directory}/rounds/'
     numberOfDirectory = (len(next(os.walk(roundDirectory))[1]))
     
