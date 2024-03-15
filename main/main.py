@@ -1,18 +1,5 @@
 #!/usr/bin/python3
 
-'''
-   Modules/Things to add 
-
-      X Command to update linux system
-   Add functionality to add docker to system repository
-      X Command to install python tkinter
-      X Command to install Docker 
-   Pip install Docker api
-   https://stackoverflow.com/questions/61698133/docker-py-permissionerror13 --> Add user to docker group
-   Test container capabilities and how python interacts with containers
-   https://stackoverflow.com/questions/34051747/get-environment-variable-from-docker-container 
-'''
-
 
 import subprocess
 import os
@@ -24,10 +11,13 @@ gameStatus = True
 script_directory = os.path.dirname(os.path.abspath(sys.argv[0]))
 systemDistro = distro.name(pretty=True)
 print(systemDistro)
+
+'''
+For binary mode
 #script_directory = sys.executable
 
 #script_directory = os.path.split(script_directory)[0]
-
+'''
 
 tkinterPip = subprocess.run(
             ['sudo', 'apt', 'install', 'python3-tk','python3-pip','python3-dev', '-y'], capture_output=True, text=True)
@@ -58,6 +48,8 @@ def dependencies(root):
         root.destroy()
 
     else:
+        addDocker = subprocess.run(['sudo','usermod','-aG','docker','$USER'],capture_output=True,text=True)
+        changeShell = subprocess.run(['newgrp','docker'],capture_output=True,text=True)
         roundContainer = subprocess.run(['docker','ps','--filter','name=^round','-aq'],capture_output=True,text=True)
         subprocess.run(['xargs','docker','rm','--force'],capture_output=True,text=True, input=roundContainer.stdout)
 
@@ -129,38 +121,38 @@ if (gameStatus):
 
     roundsCompleted = 0
     #Actual GAME
-    # for rIndex in range(0,numberOfDirectory):
-    #     subprocess.run(['echo','Creating Image, please wait.'])
-    #     roundClass = globals()[f'round{rIndex}']
-    #     currentRound  = roundClass(rIndex,script_directory)
+    for rIndex in range(0,numberOfDirectory):
+        subprocess.run(['echo','Creating Image, please wait.'])
+        roundClass = globals()[f'round{rIndex}']
+        currentRound  = roundClass(rIndex,script_directory)
         
         
-    #     currentRound.createImage()
-    #     subprocess.run(['clear'])
-    #     currentRound.startGame()
-    #     if(currentRound.quitGame == True):
-    #         subprocess.run(['clear'])
-    #         break
+        currentRound.createImage()
+        subprocess.run(['clear'])
+        currentRound.startGame()
+        if(currentRound.quitGame == True):
+            subprocess.run(['clear'])
+            break
 
-    #     if (currentRound.roundStatus == True):
-    #          roundsCompleted = roundsCompleted + 1
-    #     subprocess.run(['clear'])
+        if (currentRound.roundStatus == True):
+             roundsCompleted = roundsCompleted + 1
+        subprocess.run(['clear'])
 
     # For single round testing **BEGIN***
-    currentRound = round13(13,script_directory)
+    # currentRound = round13(13,script_directory)
         
         
-    currentRound.createImage()
-    subprocess.run(['clear'])
-    currentRound.startGame()
-    if(currentRound.quitGame == True):
-        print("hello")
-        subprocess.run(['clear'])
-        #break
+    # currentRound.createImage()
+    # subprocess.run(['clear'])
+    # currentRound.startGame()
+    # if(currentRound.quitGame == True):
+    #     print("hello")
+    #     subprocess.run(['clear'])
+    #     #break
     
-    if (currentRound.roundStatus == True ):
-            roundsCompleted = roundsCompleted + 1
-    subprocess.run(['clear'])
+    # if (currentRound.roundStatus == True ):
+    #         roundsCompleted = roundsCompleted + 1
+    # subprocess.run(['clear'])
     #***End***
     endMenu = Tk()
     endMenu.title('Thank you!')
