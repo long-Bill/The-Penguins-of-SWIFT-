@@ -24,8 +24,9 @@ tkinterPip = subprocess.run(
 
 p = subprocess.run(['sudo','pip','install','docker','pexpect','paramiko','pillow'],capture_output=True)
 if "Kali" in systemDistro:
-     d = subprocess.run(['sudo', 'apt-get', 'install', 'docker.io', '-y'],
+    d = subprocess.run(['sudo', 'apt-get', 'install', 'docker.io', '-y'],
                                 capture_output=True, text=True)
+    print(d.stdout)
 else:
     d = subprocess.run(['sudo', 'apt-get', 'install', 'docker-ce', 'docker-ce-cli', 'containerd.io', 'docker-buildx-plugin', 'docker-compose-plugin', '-y'],
                                 capture_output=True, text=True)
