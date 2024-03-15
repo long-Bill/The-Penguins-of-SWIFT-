@@ -34,6 +34,7 @@ else:
 from tkinter import *
 import docker
 from PIL import ImageTk, Image
+#Change to clean up function, dependencies will be installed in the beginning
 def dependencies(root):
     print("********Installing dependencies*********")
     update = subprocess.run(
@@ -49,11 +50,11 @@ def dependencies(root):
         root.destroy()
 
     else:
-        username = os.environ['USER']
-        addDocker = subprocess.run(['sudo','usermod','-aG','docker',f'{username}'],capture_output=True,text=True)
-        changeShell = subprocess.run(['newgrp','docker'],capture_output=True,text=True)
-        roundContainer = subprocess.run(['docker','ps','--filter','name=^round','-aq'],capture_output=True,text=True)
-        subprocess.run(['xargs','docker','rm','--force'],capture_output=True,text=True, input=roundContainer.stdout)
+        #username = os.environ['USER']
+        #addDocker = subprocess.run(['sudo','usermod','-aG','docker',f'{username}'],capture_output=True,text=True)
+        #changeShell = subprocess.run(['newgrp','docker'],capture_output=True,text=True)
+        roundContainer = subprocess.run(['sudo','docker','ps','--filter','name=^round','-aq'],capture_output=True,text=True)
+        subprocess.run(['xargs','sudo','docker','rm','--force'],capture_output=True,text=True, input=roundContainer.stdout)
 
         
         client = docker.from_env()

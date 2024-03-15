@@ -36,7 +36,7 @@ class round0:
     def startGame(self):
         def closing_menu():
             if (messagebox.askokcancel("Quit","Are you sure?")):
-                subprocess.run(['docker', 'exec', '-it','-u','root', self.name, '/var/backups/chattr','-i','/etc/bash.bashrc'])
+                subprocess.run(['sudo','docker', 'exec', '-it','-u','root', self.name, '/var/backups/chattr','-i','/etc/bash.bashrc'])
                 menu.destroy()
                 client = docker.from_env()
                 client.containers.get(self.name).remove(force=True)
@@ -89,9 +89,9 @@ class round0:
         
     def enterImage(self):
         #chattr is in /var/backups
-        subprocess.run(['docker', 'exec', '-it','-u','root', self.name, 'chattr','+i','/etc/bash.bashrc'])
-        subprocess.run(['docker', 'exec', '-it','-u','root', self.name, 'mv','/usr/bin/chattr','/var/backups/chattr'])
-        subprocess.Popen(['docker', 'exec', '-it', self.name, '/bin/bash'])
+        subprocess.run(['sudo','docker', 'exec', '-it','-u','root', self.name, 'chattr','+i','/etc/bash.bashrc'])
+        subprocess.run(['sudo','docker', 'exec', '-it','-u','root', self.name, 'mv','/usr/bin/chattr','/var/backups/chattr'])
+        subprocess.Popen(['sudo','docker', 'exec', '-it', self.name, '/bin/bash'])
         
 
     def wrongAnswer(self,error):
@@ -147,7 +147,7 @@ class round0:
         frame = Frame(root,bg="light green")
         frame.pack()
         def close():
-            subprocess.run(['docker', 'exec', '-it','-u','root', self.name, '/var/backups/chattr','-i','/etc/bash.bashrc'])
+            subprocess.run(['sudo','docker', 'exec', '-it','-u','root', self.name, '/var/backups/chattr','-i','/etc/bash.bashrc'])
             root.destroy()
             roundMenu.destroy()
             client = docker.from_env()
@@ -180,7 +180,7 @@ class round0:
     # Will be dynamic for each round
     def checkSolution(self,mainMenu):
         ls = subprocess.run(
-            ['docker', 'exec', '-it', self.name, 'cat', 'MyMessage.txt'], capture_output=True, text=True)
+            ['sudo','docker', 'exec', '-it', self.name, 'cat', 'MyMessage.txt'], capture_output=True, text=True)
         check = subprocess.run(
             ['grep', 'Maurice where are my party flags!'], capture_output=True, text=True, input=ls.stdout)
         if(check.returncode == 0 ):
@@ -196,11 +196,11 @@ class round1(round0):
 
     def checkSolution(self,mainMenu):
         fileName = subprocess.run(
-            ['docker','exec','-it',self.name,'ls','/home/skipper/.Skipper_Plan'], capture_output=True, text=True
+            ['sudo','docker','exec','-it',self.name,'ls','/home/skipper/.Skipper_Plan'], capture_output=True, text=True
         )
         if(fileName.returncode == 0):
             sum = subprocess.run(
-                ['docker','exec','-it',self.name,'sha256sum','/home/skipper/.Skipper_Plan'],capture_output=True, text=True
+                ['sudo','docker','exec','-it',self.name,'sha256sum','/home/skipper/.Skipper_Plan'],capture_output=True, text=True
             )
             if("05b4de00eca348f04d2e9272fd2fc8838e172512e04010a4d388d1d47a9b9dea" in sum.stdout):
                 self.correctAnswer(mainMenu)
@@ -220,10 +220,10 @@ class round2(round0):
         userList = ["kowalski", "rico","skipper"]
         errorUser = []
         
-        passwd = subprocess.run(['docker','exec','-it',self.name,'cat','/etc/passwd'],capture_output=True,text=True)
+        passwd = subprocess.run(['sudo','docker','exec','-it',self.name,'cat','/etc/passwd'],capture_output=True,text=True)
         for user in userList: 
             userFound = False
-            id = subprocess.run(['docker','exec','-it',self.name,'id',f'{user}'],capture_output=True,text=True)
+            id = subprocess.run(['sudo','docker','exec','-it',self.name,'id',f'{user}'],capture_output=True,text=True)
             
             if("no such user" in id.stdout ):
                 userFound = False
@@ -246,7 +246,7 @@ class round2(round0):
             self.wrongAnswer(f'{userErrors} - Incorrect! \ncheck username, home directory, \nor default shell')
         else:
             for user in userList:
-                child = pexpect.spawn(f'docker exec -it {self.name} su - {user} ')
+                child = pexpect.spawn(f'sudo docker exec -it {self.name} su - {user} ')
                 child.expect("Password:")
                 child.sendline("$butterb@11")
                 try:
@@ -270,7 +270,7 @@ class round3(round0):
 
     def checkSolution(self,mainMenu):
         sudo = subprocess.run(
-            ['docker', 'exec', '-it', self.name, 'grep','sudo','/etc/group'], capture_output=True, text=True)
+            ['sudo','docker', 'exec', '-it', self.name, 'grep','sudo','/etc/group'], capture_output=True, text=True)
         if("mort" in sudo.stdout):
             self.wrongAnswer("WRONG! \nMORT STILL HAS SUDO")
         elif("mort" not in sudo.stdout):
@@ -284,7 +284,7 @@ class round4(round0):
 
     def checkSolution(self,mainMenu):
         textFile = subprocess.run(
-            ['docker','exec','-it',self.name,'cat','/home/skipper/myFame.txt'],capture_output=True,text=True
+            ['sudo','docker','exec','-it',self.name,'cat','/home/skipper/myFame.txt'],capture_output=True,text=True
         )
 
         if(textFile.returncode == 0 and "258" in textFile.stdout):
@@ -305,7 +305,7 @@ class round5(round0):
         matched = False
         errorLine =""
         file = subprocess.run(
-            ['docker','exec','-it',self.name,'cat','/home/private/Names_in_the_zoo.txt'],capture_output=True,text=True
+            ['sudo','docker','exec','-it',self.name,'cat','/home/private/Names_in_the_zoo.txt'],capture_output=True,text=True
         )     
         if(file.returncode == 1):
             self.wrongAnswer("Error!\nFile: \n\"Names_in_the_zoo.txt\" not found.") 
@@ -341,7 +341,7 @@ class round6(round0):
             
             listOfDir = [f'/home/{penguin}',f'/home/{penguin}/Documents',f'/home/{penguin}/Downloads']
             for dir in listOfDir:
-                directory = subprocess.run(['docker','exec','-it',self.name,'ls','-ld',dir],capture_output=True,text=True)
+                directory = subprocess.run(['sudo','docker','exec','-it',self.name,'ls','-ld',dir],capture_output=True,text=True)
                 if(directory.returncode == 2):
                     self.wrongAnswer(f'{dir} \ndoesn\'t exists.')
                     error = True
@@ -358,7 +358,7 @@ class round6(round0):
                         self.wrongAnswer(f'{dir} does not have \nthe correct owner.')
                         error = True
                         break
-                    octal = subprocess.run(['docker','exec','-it',self.name,'stat','-c',"%a",dir],capture_output=True,text=True)
+                    octal = subprocess.run(['sudo','docker','exec','-it',self.name,'stat','-c',"%a",dir],capture_output=True,text=True)
                     if("770" in octal.stdout or "750" in octal.stdout): 
                         error = False
                     else:
@@ -366,7 +366,7 @@ class round6(round0):
                         error = True
                         break
                     julien = f'/home/{penguin}/Julien_Spy.txt'
-                    file = subprocess.run(['docker','exec','-it',self.name,'ls','-l',julien],capture_output=True,text=True)
+                    file = subprocess.run(['sudo','docker','exec','-it',self.name,'ls','-l',julien],capture_output=True,text=True)
                     owner = subprocess.run(['awk','-F ','{{print $3}}'],capture_output=True,text=True, input=file.stdout)
                     group = subprocess.run(['awk','-F ','{{print $4}}'],capture_output=True,text=True, input=file.stdout)
                     if(file.returncode == 2):
@@ -382,7 +382,7 @@ class round6(round0):
                             self.wrongAnswer(f'{julien} does not have \nthe correct owner.')
                             error = True
                             break
-                        octal = subprocess.run(['docker','exec','-it',self.name,'stat','-c',"%a",julien],capture_output=True,text=True)
+                        octal = subprocess.run(['sudo','docker','exec','-it',self.name,'stat','-c',"%a",julien],capture_output=True,text=True)
                         if("770" in octal.stdout or "750" in octal.stdout or "570" in octal.stdout or "550" in octal.stdout): 
                             error = False
                         else:
@@ -405,7 +405,7 @@ class round7(round0):
         commands = ['ls','cat','cd','grep']
         error = False
         for com in commands:
-            alias = subprocess.run(['docker','exec','-it',self.name,'grep','-E',f'^[alias]*.{com}=',f'/home/{user}/.bashrc'],capture_output=True,text=True)
+            alias = subprocess.run(['sudo','docker','exec','-it',self.name,'grep','-E',f'^[alias]*.{com}=',f'/home/{user}/.bashrc'],capture_output=True,text=True)
             if(alias.returncode == 0 and "#" not in alias.stdout and "alias" in alias.stdout):
                 error = True
                 self.wrongAnswer(f'Incorrect\nThe command {com} is broken.')
@@ -429,14 +429,14 @@ class round8(round0):
         error = False
         userList = ['king_julien','mort']
         for user in userList:
-            id = subprocess.run(['docker','exec','-it',self.name,'id',f'{user}'],capture_output=True,text=True)
+            id = subprocess.run(['sudo','docker','exec','-it',self.name,'id',f'{user}'],capture_output=True,text=True)
             if("sudo" not in id.stdout):
                 self.wrongAnswer(f'{user} is not apart of the sudo group')
                 error = True
                 break
             else:
-                YESPasswd = subprocess.run(['docker','exec','-it','-u','root',self.name,'grep','-E','^%sudo.*(ALL:ALL)','/etc/sudoers'],capture_output=True,text=True)
-                noPasswd = subprocess.run(['docker','exec','-it','-u','root',self.name,'grep','-E','*%sudo.*NOPASSWD','/etc/sudoers'],capture_output=True,text=True)
+                YESPasswd = subprocess.run(['sudo','docker','exec','-it','-u','root',self.name,'grep','-E','^%sudo.*(ALL:ALL)','/etc/sudoers'],capture_output=True,text=True)
+                noPasswd = subprocess.run(['sudo','docker','exec','-it','-u','root',self.name,'grep','-E','*%sudo.*NOPASSWD','/etc/sudoers'],capture_output=True,text=True)
                 if(noPasswd.returncode == 0 and "#" not in noPasswd.stdout):
                     self.wrongAnswer("Incorrect! \nSudo users still do not require passwords.")
                     error = True
@@ -455,7 +455,7 @@ class round9(round0):
 	
     def enterImage(self):
         import time
-        subprocess.run(['docker','exec','-it','-u','root',self.name,'service','cron','start'],capture_output=True)
+        subprocess.run(['sudo','docker','exec','-it','-u','root',self.name,'service','cron','start'],capture_output=True)
         print("Give this round some extra time to build about 50 seconds. Remember to standup and walk around.")
         time.sleep(60)
         subprocess.run(['clear'])
@@ -465,10 +465,10 @@ class round9(round0):
 
     def checkSolution(self, mainMenu):
         error = False
-        aux = subprocess.run(['docker','exec','-it',self.name,'ps','aux'],capture_output=True,text=True)
+        aux = subprocess.run(['sudo','docker','exec','-it',self.name,'ps','aux'],capture_output=True,text=True)
         grep = subprocess.run(['grep','/root'],capture_output=True,text=True,input=aux.stdout)
         
-        passwd = subprocess.run(['docker','exec','-it','-u','root',self.name,'cat','/etc/passwd'],capture_output=True,text=True)
+        passwd = subprocess.run(['sudo','docker','exec','-it','-u','root',self.name,'cat','/etc/passwd'],capture_output=True,text=True)
         users = subprocess.run(['grep','-E','^user*[0-9]'],capture_output=True,text=True,input=passwd.stdout)
         kowalski = subprocess.run(['grep','kowalski'],capture_output=True,text=True,input=passwd.stdout)
         #Bug
@@ -502,7 +502,7 @@ class round10(round0):
         userList = ['skipper','private']
         errorUser = []
         for user in userList:
-            child = pexpect.spawn(f'docker exec -it {self.name} su - {user} ')
+            child = pexpect.spawn(f'sudo docker exec -it {self.name} su - {user} ')
             child.expect("Password:")
             child.sendline("Moto(Mot0)")
             try:
@@ -541,8 +541,8 @@ class round11(round0):
     
     def enterImage(self):
         super().enterImage()
-        subprocess.run(['docker','exec','-it','-u','root',self.name,'service','ssh','start'],capture_output=True)
-        subprocess.run(['docker','exec','-it','-u','root',self.name,'service','ssh','restart'],capture_output=True)
+        subprocess.run(['sudo','docker','exec','-it','-u','root',self.name,'service','ssh','start'],capture_output=True)
+        subprocess.run(['sudo','docker','exec','-it','-u','root',self.name,'service','ssh','restart'],capture_output=True)
     def checkSolution(self, mainMenu):
         import paramiko
         user = 'myguest'
