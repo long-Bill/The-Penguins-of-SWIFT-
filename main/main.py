@@ -22,8 +22,8 @@ import distro
 ############### Main ###########################
 gameStatus = True
 script_directory = os.path.dirname(os.path.abspath(sys.argv[0]))
-os = distro.name(pretty=True)
-#print(os)
+systemDistro = distro.name(pretty=True)
+print(systemDistro)
 #script_directory = sys.executable
 
 #script_directory = os.path.split(script_directory)[0]
@@ -33,7 +33,7 @@ tkinterPip = subprocess.run(
             ['sudo', 'apt', 'install', 'python3-tk','python3-pip','python3-dev', '-y'], capture_output=True, text=True)
 
 p = subprocess.run(['sudo','pip','install','docker','pexpect','paramiko','pillow'],capture_output=True)
-if "kali" in os:
+if "Kali" in systemDistro:
      d = subprocess.run(['sudo', 'apt-get', 'install', 'docker.io', '-y'],
                                 capture_output=True, text=True)
 else:
@@ -58,11 +58,6 @@ def dependencies(root):
         root.destroy()
 
     else:
-        
-        
-        
-        
-        
         roundContainer = subprocess.run(['docker','ps','--filter','name=^round','-aq'],capture_output=True,text=True)
         subprocess.run(['xargs','docker','rm','--force'],capture_output=True,text=True, input=roundContainer.stdout)
 
@@ -92,7 +87,7 @@ menu.protocol("WM_DELETE_WINDOW" , closing_menu)
 
 menu.title('The Penguins of SWIFT')
 
-img = PhotoImage(file="assets/penguinStart.png")
+img = PhotoImage(file=f"{script_directory}/assets/penguinStart.png")
 img = img.subsample(5)
 
 menu.config(background="#303030")
@@ -179,7 +174,7 @@ if (gameStatus):
 
     endMenu.geometry('%dx%d+%d+%d' % (w, h, x, y))
     endMenu.configure(bg="#303030")
-    img = PhotoImage(file="assets/private.png")
+    img = PhotoImage(file=f"{script_directory}/assets/private.png")
     img = img.subsample(6)
     picture = Label(endMenu, image= img,bg="#303030")
     picture.place(relx=0.5, rely=0.25, anchor='center')
@@ -200,10 +195,6 @@ if (gameStatus):
 
     endMenu.mainloop() 
         
-    
-
-
-# Create a dictionary with round objects and the round number next to it.
 
 
 
