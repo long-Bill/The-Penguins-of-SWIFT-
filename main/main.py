@@ -17,10 +17,13 @@
 import subprocess
 import os
 import sys
+import distro
 
 ############### Main ###########################
 gameStatus = True
 script_directory = os.path.dirname(os.path.abspath(sys.argv[0]))
+os = distro.name(pretty=True)
+#print(os)
 #script_directory = sys.executable
 
 #script_directory = os.path.split(script_directory)[0]
@@ -30,8 +33,11 @@ tkinterPip = subprocess.run(
             ['sudo', 'apt', 'install', 'python3-tk','python3-pip','python3-dev', '-y'], capture_output=True, text=True)
 
 p = subprocess.run(['sudo','pip','install','docker','pexpect','paramiko','pillow'],capture_output=True)
-
-d = subprocess.run(['sudo', 'apt-get', 'install', 'docker-ce', 'docker-ce-cli', 'containerd.io', 'docker-buildx-plugin', 'docker-compose-plugin', '-y'],
+if "kali" in os:
+     d = subprocess.run(['sudo', 'apt-get', 'install', 'docker.io', '-y'],
+                                capture_output=True, text=True)
+else:
+    d = subprocess.run(['sudo', 'apt-get', 'install', 'docker-ce', 'docker-ce-cli', 'containerd.io', 'docker-buildx-plugin', 'docker-compose-plugin', '-y'],
                                 capture_output=True, text=True)
 
 from tkinter import *
