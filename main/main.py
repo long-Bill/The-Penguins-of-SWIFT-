@@ -21,6 +21,11 @@ import sys
 ############### Main ###########################
 gameStatus = True
 script_directory = os.path.dirname(os.path.abspath(sys.argv[0]))
+#script_directory = sys.executable
+
+#script_directory = os.path.split(script_directory)[0]
+
+
 tkinterPip = subprocess.run(
             ['sudo', 'apt', 'install', 'python3-tk','python3-pip','python3-dev', '-y'], capture_output=True, text=True)
 
@@ -81,7 +86,7 @@ menu.protocol("WM_DELETE_WINDOW" , closing_menu)
 
 menu.title('The Penguins of SWIFT')
 
-img = PhotoImage(file="/opt/game/assets/penguinStart.png")
+img = PhotoImage(file="assets/penguinStart.png")
 img = img.subsample(5)
 
 menu.config(background="#303030")
@@ -123,38 +128,38 @@ if (gameStatus):
 
     roundsCompleted = 0
     #Actual GAME
-    for rIndex in range(0,numberOfDirectory):
-        subprocess.run(['echo','Creating Image, please wait.'])
-        roundClass = globals()[f'round{rIndex}']
-        currentRound  = roundClass(rIndex,script_directory)
+    # for rIndex in range(0,numberOfDirectory):
+    #     subprocess.run(['echo','Creating Image, please wait.'])
+    #     roundClass = globals()[f'round{rIndex}']
+    #     currentRound  = roundClass(rIndex,script_directory)
         
         
-        currentRound.createImage()
-        subprocess.run(['clear'])
-        currentRound.startGame()
-        if(currentRound.quitGame == True):
-            subprocess.run(['clear'])
-            break
+    #     currentRound.createImage()
+    #     subprocess.run(['clear'])
+    #     currentRound.startGame()
+    #     if(currentRound.quitGame == True):
+    #         subprocess.run(['clear'])
+    #         break
 
-        if (currentRound.roundStatus == True):
-             roundsCompleted = roundsCompleted + 1
-        subprocess.run(['clear'])
+    #     if (currentRound.roundStatus == True):
+    #          roundsCompleted = roundsCompleted + 1
+    #     subprocess.run(['clear'])
 
     # For single round testing **BEGIN***
-    # currentRound = round11(11,script_directory)
+    currentRound = round13(13,script_directory)
         
         
-    # currentRound.createImage()
-    # subprocess.run(['clear'])
-    # currentRound.startGame()
-    # if(currentRound.quitGame == True):
-    #     print("hello")
-    #     subprocess.run(['clear'])
-    #     #break
+    currentRound.createImage()
+    subprocess.run(['clear'])
+    currentRound.startGame()
+    if(currentRound.quitGame == True):
+        print("hello")
+        subprocess.run(['clear'])
+        #break
     
-    # if (currentRound.roundStatus == True ):
-    #         roundsCompleted = roundsCompleted + 1
-    # subprocess.run(['clear'])
+    if (currentRound.roundStatus == True ):
+            roundsCompleted = roundsCompleted + 1
+    subprocess.run(['clear'])
     #***End***
     endMenu = Tk()
     endMenu.title('Thank you!')
@@ -168,7 +173,7 @@ if (gameStatus):
 
     endMenu.geometry('%dx%d+%d+%d' % (w, h, x, y))
     endMenu.configure(bg="#303030")
-    img = PhotoImage(file="/opt/game/assets/private.png")
+    img = PhotoImage(file="assets/private.png")
     img = img.subsample(6)
     picture = Label(endMenu, image= img,bg="#303030")
     picture.place(relx=0.5, rely=0.25, anchor='center')
