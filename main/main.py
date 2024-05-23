@@ -50,8 +50,8 @@ def dependencies(root):
         root.destroy()
 
     else:
-        #username = os.environ['USER']
-        #addDocker = subprocess.run(['sudo','usermod','-aG','docker',f'{username}'],capture_output=True,text=True)
+        username = os.environ['USER']
+        addDocker = subprocess.run(['sudo','usermod','-aG','docker',f'{username}'],capture_output=True,text=True)
         #changeShell = subprocess.run(['newgrp','docker'],capture_output=True,text=True)
         roundContainer = subprocess.run(['sudo','docker','ps','--filter','name=^round','-aq'],capture_output=True,text=True)
         subprocess.run(['xargs','sudo','docker','rm','--force'],capture_output=True,text=True, input=roundContainer.stdout)

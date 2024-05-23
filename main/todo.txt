@@ -1,11 +1,8 @@
-Create a proper round(s)
-Define checkSolution function for each round
-End game GUI based on gameStatus(true) of each round. You finished 3/15 rounds
-correctAnswer GUI error handle on X
-
-
-
-Add a description file in each round's directory 
+Prompt to install dependencies on console
+Remove sudo from subprocess commands
+Prompt to restart machine after initial run (adds current user to docker group)
+Docker error handling
+Round selection menu?? Arcade mode or story mode?? 
 
 
 
