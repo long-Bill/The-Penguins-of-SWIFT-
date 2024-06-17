@@ -10,7 +10,7 @@ import distro
 gameStatus = True
 script_directory = os.path.dirname(os.path.abspath(sys.argv[0]))
 systemDistro = distro.name(pretty=True)
-print(systemDistro)
+
 
 '''
 For binary mode
@@ -18,7 +18,26 @@ For binary mode
 
 #script_directory = os.path.split(script_directory)[0]
 '''
-
+inputLoop = True
+subprocess.run(['clear'])
+while(inputLoop):
+    print("**************************************************************")
+    print("*       Dependencies need to be installed to start game      *")
+    print("*                         Continue?                          *")
+    print("**************************************************************")
+    install = input("Please select Yes (y) or No (n): ")
+    if (install == 'y' or install == 'Y' or install == 'yes' or install == 'Yes'):
+        subprocess.run(['clear'])
+        inputLoop = False
+        ####Install dependencies
+        print("HE SAID YES")
+    elif (install == 'n' or install == 'N' or install == 'no' or install == 'No'):
+        subprocess.run(['clear'])
+        print("Exiting...")
+        sys.exit()
+    else:
+        subprocess.run(['clear'])
+        print("Input error: incorrect input, please try again")
 tkinterPip = subprocess.run(
             ['sudo', 'apt', 'install', 'python3-tk','python3-pip','python3-dev', '-y'], capture_output=True, text=True)
 
